@@ -10,17 +10,18 @@ const setupDevServer = require('../build/setup-dev-server')
 // const { createBundleRenderer, createRenderer } = require('vue-server-renderer')
 const { createBundleRenderer } = require('vue-server-renderer')
 
+const resolve = file => path.resolve(__dirname, file)
 // 缓存
-const microCache = LRU({
-  max: 100,
-  maxAge: 1000 * 60 * 15 // 重要提示：条目在 15 秒后过期。
+const microCache = new LRU({
+  max: 1000, // 最大緩存数
+  maxAge: 1000 * 60 * 15 // 重要提示：条目在 15 分钟后过期。
 })
 
 const isCacheable = ctx => {
   // 实现逻辑为，检查请求是否是用户特定(user-specific)。
   // 只有非用户特定(non-user-specific)页面才会缓存
   console.log(ctx.url)
-  if (ctx.url === '/b') {
+  if (ctx.url && ctx.url === '/b') {
     return true
   }
   return false
@@ -42,6 +43,13 @@ if (process.env.NODE_ENV === 'production') {
   renderer = createBundleRenderer(serverBundle, {
     runInNewContext: false,
     template: fs.readFileSync(templatePath, 'utf-8'),
+    // for component caching
+    cache: new LRU({
+      max: 1000,
+      maxAge: 1000 * 60 * 15
+    }),
+    // this is only needed when vue-server-renderer is npm-linked
+    basedir: resolve('../dist'),
     clientManifest
   })
   // 静态资源  async标记的函数称为异步函数，在异步函数中，可以用await调用另一个异步函数，这两个关键字将在ES7中引入
