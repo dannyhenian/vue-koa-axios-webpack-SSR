@@ -1,7 +1,12 @@
+import './polyfill' // 引入全局的语法，如Promise
+
 import Vue from 'vue'
+import api from '~api'
+
 import { createApp } from './app'
 
 Vue.mixin({
+  // 当复用的路由组件参数发生变化时，例如/library/1 => /library/2
   beforeRouteUpdate (to, from, next) {
     const { asyncData } = this.$options
     if (asyncData) {
@@ -20,6 +25,7 @@ const { app, router, store } = createApp()
 // 如果有__INITIAL_STATE__变量，则将store的状态用它替换
 if (window.__INITIAL_STATE__) {
   store.replaceState(window.__INITIAL_STATE__)
+  store.$api = store.state.$api = api
 }
 
 router.onReady(() => {
@@ -42,14 +48,17 @@ router.onReady(() => {
     // 这里如果有加载指示器(loading indicator)，就触发
     Promise.all(activated.map(c => {
       if (c.asyncData) {
-        return c.asyncData({ store, route: to })
+        return c.asyncData({
+          store,
+          route: to,
+          isServer: false,
+          isClient: true
+        })
       }
     })).then(() => {
-      console.log('client1 == ')
       // 停止加载指示器(loading indicator)
       next()
     }).catch(next)
   })
-  console.log('client2 == ')
   app.$mount('#app')
 })

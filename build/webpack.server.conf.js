@@ -20,6 +20,12 @@ module.exports = merge(baseWebpackConfig, {
     libraryTarget: 'commonjs2',
     filename: 'server-bundle.js'
   },
+  resolve: {
+    alias: {
+      '~api': path.resolve(__dirname, '../src/api/index-server'),
+      'api-config': path.resolve(__dirname, '../src/api/config-server')
+    }
+  },
   externals: nodeExternals({
     whitelist: /\.css$/
   }),

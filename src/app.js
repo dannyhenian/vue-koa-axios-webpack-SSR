@@ -1,11 +1,18 @@
 import Vue from 'vue'
-import App from './App.vue'
-import TitleMixin from './mixins/title-mixins'
-import { createRouter } from './router'
-import { createStore } from './store'
 import { sync } from 'vuex-router-sync'
 
+import { createRouter } from './router'
+import { createStore } from './store'
+
+import App from './App.vue'
+import * as filters from './filters'
+import TitleMixin from './mixins/title-mixins'
+
 Vue.mixin(TitleMixin)
+
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
 
 // createApp工厂方法
 export function createApp (context) {
@@ -20,6 +27,7 @@ export function createApp (context) {
     router,
     store,
     render: h => h(App)
+    // ...App
   })
 
   return { app, router, store }

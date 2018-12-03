@@ -40,9 +40,16 @@ module.exports = {
     extensions: ['.js', '.vue'],
     // 模块别名列表
     alias: {
-      'components': resolve('src/components'),
-      'assets': resolve('src/assets'),
-      '@': resolve('src')
+      '@': resolve('src'),
+      '~src': resolve('src'),
+      '~components': resolve('src/components'),
+      '~assets': resolve('src/assets'),
+      '~pages': resolve('src/pages'),
+      '~mixins': resolve('src/mixins'),
+      '~store': resolve('src/store'),
+      '~utils': resolve('src/utils'),
+      '~api': resolve('src/api/index-client'),
+      'api-config': resolve('src/api/config-client')
     }
   },
   module: {
