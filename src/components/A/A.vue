@@ -13,11 +13,11 @@ export default {
   },
   asyncData ({ store, route }) {
     // 触发 action 后，会返回 Promise
-    return store.dispatch('fetchMovie', 54321)
+    return store.dispatch('demo/fetchMovie', 54321)
   },
   computed: {
     movie () {
-      return this.$store.state.movie
+      return this.$store.state.demo.movie
     }
   }
 }

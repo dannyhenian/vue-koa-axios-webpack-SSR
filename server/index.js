@@ -3,6 +3,8 @@ const Koa = require('koa')
 const path = require('path')
 const chalk = require('chalk')
 const LRU = require('lru-cache')
+const favicon = require('koa-favicon') // 设置网站icon
+const staticFiles = require('koa-static')
 const send = require('koa-send')
 const bodyParser = require('koa-bodyparser')
 const Router = require('koa-router')
@@ -20,7 +22,7 @@ const microCache = new LRU({
 const isCacheable = ctx => {
   // 实现逻辑为，检查请求是否是用户特定(user-specific)。
   // 只有非用户特定(non-user-specific)页面才会缓存
-  console.log(ctx.url)
+  console.log('当前路由地址： ' + ctx.url)
   if (ctx.url && ctx.url === '/b') {
     return true
   }
@@ -86,10 +88,7 @@ const render = async (ctx, next) => {
 
   const context = {
     url: ctx.url,
-    meta: `
-      <meta name="screen-orientation" content="portrait"/>
-      <meta name="apple-mobile-web-app-capable" content="yes">    
-    `
+    cookies: ctx.cookies
   }
 
   // 判断是否可缓存，可缓存并且缓存中有则直接返回
@@ -104,6 +103,7 @@ const render = async (ctx, next) => {
   }
 
   try {
+    console.log('开始渲染页面')
     const html = await renderer.renderToString(context)
     console.log('html=== ' + html)
     console.log('ctx== ' + JSON.stringify(ctx))
@@ -120,6 +120,8 @@ const render = async (ctx, next) => {
 router.get('*', render)
 
 app.use(bodyParser())
+  .use(staticFiles(path.resolve(__dirname, "../dist")))
+  .use(favicon(path.resolve( __dirname, '../static/favicon.ico')))
   .use(router.routes())
   .use(router.allowedMethods())
 

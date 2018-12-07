@@ -7,36 +7,37 @@ import config from './config-server'
 // const SSR = global.__VUE_SSR_CONTEXT__
 // const SSRCookies = SSR.cookies || {}
 
-const parseCookie = cookies => {
-  let cookie = ''
-  Object.keys(cookies).forEach(item => {
-    cookie += item + '=' + cookies[item] + '; '
-  })
-  return cookie
-}
+// const parseCookie = cookies => {
+//   let cookie = ''
+//   Object.keys(cookies).forEach(item => {
+//     cookie += item + '=' + cookies[item] + '; '
+//   })
+//   return cookie
+// }
 
 export default {}
 
-export const api = cookies => {
+export const api = () => {
   return {
-    cookies,
+    // cookies,
     api: axios.create({
       baseURL: config.api,
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json;charset=UTF-8',
-        'Accept': 'application/json',
-        cookie: parseCookie(cookies)
+        'Accept': 'application/json'
+        // cookie: parseCookie(cookies)
       },
       timeout: config.timeout
     }),
-    getCookes () {
-      return this.cookies
-    },
+    // getCookes () {
+    //   return this.cookies
+    // },
     post (url, data) {
-      const cookies = this.getCookes() || {}
-      const username = cookies.username || ''
-      const key = md5(url + JSON.stringify(data) + username)
+      // const cookies = this.getCookes() || {}
+      // const username = cookies.username || ''
+      // const key = md5(url + JSON.stringify(data) + username)
+      const key = md5(url + JSON.stringify(data))
       if (config.isCached && data.cache && config.cached.has(key)) {
         const res = config.cached.get(key)
         return Promise.resolve(res && res.data)
@@ -55,9 +56,10 @@ export const api = cookies => {
       })
     },
     async get (url, params) {
-      const cookies = this.getCookes() || {}
-      const username = cookies.username || ''
-      const key = md5(url + JSON.stringify(params) + username)
+      // const cookies = this.getCookes() || {}
+      // const username = cookies.username || ''
+      // const key = md5(url + JSON.stringify(params) + username)
+      const key = md5(url + JSON.stringify(params))
       console.log('config.cached=== ' + config.cached)
       console.log('config===  ' + JSON.stringify(config))
 

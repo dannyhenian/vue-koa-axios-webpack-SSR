@@ -1,5 +1,6 @@
 import { createApp } from './app'
 import { api } from '~api'
+const CircularJSON = require('circular-json')
 
 export default context => {
   // 返回Promise 等待异步路由钩子函数或组件
@@ -21,7 +22,9 @@ export default context => {
         return reject({ code: 404 })
       }
 
-      store.$api = store.state.$api = api(context.cookies)
+      console.log('context.cookies===' + CircularJSON.stringify(context.cookies))
+      // store.$api = store.state.$api = api(context.cookies)
+      store.$api = store.state.$api = api()
 
       // 对所有匹配的路由组件调用 `asyncData()`
       Promise.all(matchedComponents.map(Component => {
@@ -29,7 +32,7 @@ export default context => {
           return Component.asyncData({
             store,
             route: router.currentRoute,
-            cookies: context.cookies,
+            // cookies: context.cookies,
             isServer: true,
             isClient: false
           })
@@ -41,9 +44,9 @@ export default context => {
         // 并且 `template` 选项用于 renderer 时，
         // 状态将自动序列化为 `window.__INITIAL_STATE__`，并注入 HTML。
         context.state = store.state
-        // console.log('context.url== ' + context.url)
-        // console.log('context.state== ' + JSON.stringify(context.state))
-        // console.log('server== ')
+        console.log('context.url== ' + context.url)
+        console.log('context.state== ' + CircularJSON.stringify(context.state))
+        console.log('server== ')
         resolve(app)
       }).catch(reject)
     }, reject)

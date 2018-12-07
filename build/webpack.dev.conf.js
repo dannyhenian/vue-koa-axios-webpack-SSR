@@ -1,4 +1,4 @@
-const path = require('path')
+// const path = require('path')
 const utils = require('./utils')
 const webpack = require('webpack')
 const config = require('../config')
@@ -12,9 +12,10 @@ const PORT = process.env.PORT && Number(process.env.PORT)
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   mode: 'development',
-  entry: {
-    'app': path.join(__dirname, '../src/entry-client.js')
-  },
+  // entry: {
+  //   'app': path.join(__dirname, '../src/entry-client.js')
+  // },
+  entry: './src/entry-client.js',
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.dev.cssSourceMap,

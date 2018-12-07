@@ -7,8 +7,9 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 
 // 用于返回文件相对于根目录的绝对路径
-const resolve = dir => path.posix.join(__dirname, '..', dir)
-
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
 // 创建ESlint相关rules
 const createLintingRule = () => ({
   test: /\.(js|vue)$/,
