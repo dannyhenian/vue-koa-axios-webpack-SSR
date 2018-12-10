@@ -69,7 +69,7 @@ if (process.env.NODE_ENV === 'production') {
   //   await send(ctx, ctx.path, { root: path.resolve(__dirname, '../dist') })
   // })
 } else {
-   templatePath = path.resolve(__dirname, './index.html')
+  templatePath = path.resolve(__dirname, './index.html')
   // 开发环境
   setupDevServer(app, templatePath, (bundle, options) => {
     console.log('重新bundle~~~~~')
