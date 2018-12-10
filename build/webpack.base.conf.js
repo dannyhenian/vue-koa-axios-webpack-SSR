@@ -6,6 +6,8 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 // 服务端渲染用到的插件、默认生成JSON
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+
 // 用于返回文件相对于根目录的绝对路径
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -102,6 +104,11 @@ module.exports = {
     ]
   },
   plugins: [
+    new CopyWebpackPlugin([{
+      from: path.join(__dirname, '../static'),
+      to: path.join(__dirname, '../dist'),
+      ignore: ['.*', 'index.html']
+    }]),
     new VueLoaderPlugin(),
     new VueSSRClientPlugin()
   ]
