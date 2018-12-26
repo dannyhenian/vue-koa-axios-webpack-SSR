@@ -1,19 +1,19 @@
-import axios from 'axios'
+import axios from 'axios';
 // import qs from 'qs'
-import config from './config-client'
-import { throwErr } from '../utils/constant/throwErr' // 捕捉服务端http状态码的方法
+import config from './config-client';
+import { throwErr } from '../utils/constant/throwErr'; // 捕捉服务端http状态码的方法
 // import store from '@/store' // 引入vuex的相关操作
 // import router from '@/router'
 
 // 过滤请求
 axios.interceptors.request.use(
   config => {
-    return config
+    return config;
   },
   error => {
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
-)
+);
 
 // 添加响应拦截器
 axios.interceptors.response.use(
@@ -21,18 +21,18 @@ axios.interceptors.response.use(
     response,
   error => {
     if (error && error.response) {
-      let res = {}
-      res.code = error.response.status
-      res.message = throwErr(error.response.status, error.response) // throwErr 捕捉服务端的http状态码 定义在utils工具类的方法
-      return Promise.reject(res)
+      let res = {};
+      res.code = error.response.status;
+      res.message = throwErr(error.response.status, error.response); // throwErr 捕捉服务端的http状态码 定义在utils工具类的方法
+      return Promise.reject(res);
     }
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
-)
+);
 
 function checkStatus (response) {
   if (response.status === 200 || response.status === 304) {
-    return response
+    return response;
   }
   return {
     data: {
@@ -40,18 +40,18 @@ function checkStatus (response) {
       message: response.statusText,
       data: ''
     }
-  }
+  };
 }
 
 function checkCode (res) {
   if (res.data.code === -500) {
-    window.location.href = '/backend'
+    window.location.href = '/backend';
   } else if (res.data.code === -400) {
-    window.location.href = '/'
+    window.location.href = '/';
   } else if (res.data.code !== 200) {
     // showMsg(res.data.message)
   }
-  return res && res.data
+  return res && res.data;
 }
 
 export default {
@@ -69,7 +69,7 @@ export default {
       }
     })
       .then(checkStatus)
-      .then(checkCode)
+      .then(checkCode);
   },
   get (url, params) {
     return axios({
@@ -80,8 +80,8 @@ export default {
       headers: {
         'X-Requested-With': 'XMLHttpRequest'
       }
-    })
+    });
     // .then(checkStatus)
     // .then(checkCode)
   }
-}
+};

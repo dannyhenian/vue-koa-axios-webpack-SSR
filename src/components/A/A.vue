@@ -9,16 +9,16 @@
 export default {
   // mixins: [titleMixin],
   title () {
-    return 'A页面'
+    return 'A页面';
   },
   asyncData ({ store, route }) {
     // 触发 action 后，会返回 Promise
-    return store.dispatch('demo/fetchMovie', 54321)
+    return store.dispatch('demo/fetchMovie', 54321);
   },
   computed: {
     movie () {
-      return this.$store.state.demo.movie
+      return this.$store.state.demo.movie;
     }
   }
-}
+};
 </script>

@@ -1,9 +1,9 @@
-import axios from 'axios'
+import axios from 'axios';
 // import qs from 'qs' //格式化数据
-import md5 from 'md5'
-import config from './config-server'
+import md5 from 'md5';
+import config from './config-server';
 
-export default {}
+export default {};
 
 export const api = () => {
   return {
@@ -20,10 +20,10 @@ export const api = () => {
       // const cookies = this.getCookes() || {}
       // const username = cookies.username || ''
       // const key = md5(url + JSON.stringify(data) + username)
-      const key = md5(url + JSON.stringify(data))
+      const key = md5(url + JSON.stringify(data));
       if (config.isCached && data.cache && config.cached.has(key)) {
-        const res = config.cached.get(key)
-        return Promise.resolve(res && res.data)
+        const res = config.cached.get(key);
+        return Promise.resolve(res && res.data);
       }
       return this.api({
         method: 'post',
@@ -34,28 +34,28 @@ export const api = () => {
           'Content-Type': 'application/json; charset=UTF-8'
         }
       }).then(res => {
-        if (config.isCached && data.cache) config.cached.set(key, res)
-        return res && res.data
-      })
+        if (config.isCached && data.cache) config.cached.set(key, res);
+        return res && res.data;
+      });
     },
     async get (url, params) {
-      const key = md5(url + JSON.stringify(params))
+      const key = md5(url + JSON.stringify(params));
       // console.log('config.cached=== ' + config.cached)
       // console.log('config===  ' + JSON.stringify(config))
 
       if (config.isCached && params.cache && config.cached.has(key)) {
-        const res = config.cached.get(key)
+        const res = config.cached.get(key);
         // console.log('res==== ' + res)
-        return Promise.resolve(res && res.data)
+        return Promise.resolve(res && res.data);
       }
       return this.api({
         method: 'get',
         url,
         params
       }).then(res => {
-        if (config.isCached && params.cache) config.cached.set(key, res)
-        return res && res.data
-      })
+        if (config.isCached && params.cache) config.cached.set(key, res);
+        return res && res.data;
+      });
     }
-  }
-}
+  };
+};

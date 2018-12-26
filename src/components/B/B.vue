@@ -8,17 +8,17 @@
 <script>
 export default {
   title () {
-    return 'B页面'
+    return 'B页面';
   },
   asyncData ({ store, route }) {
     // 触发 action 后，会返回 Promise
-    return store.dispatch('demo/fetchMovie', 12345)
+    return store.dispatch('demo/fetchMovie', 12345);
   },
   computed: {
     movie () {
-      return this.$store.state.demo.movie
+      return this.$store.state.demo.movie;
     }
   }
-}
+};
 </script>
 
