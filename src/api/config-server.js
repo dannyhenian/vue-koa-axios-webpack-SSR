@@ -1,4 +1,5 @@
 const LRU = require('lru-cache')
+// const CircularJSON = require('circular-json')
 
 let api
 // const cached = false
@@ -21,5 +22,9 @@ if (process.__API__) {
     cachedItem: {}
   }
 }
+
+// console.log(JSON.stringify(api))
+// console.log(CircularJSON.stringify(process))
+// console.log(CircularJSON.stringify(process.__API__))
 
 module.exports = api

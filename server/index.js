@@ -5,15 +5,16 @@ const chalk = require('chalk')
 const LRU = require('lru-cache')
 const koaCompress = require('koa-compress')
 const compressible = require('compressible')
+const send = require('koa-send')
 const koaStatic = require('./static')
 const bodyParser = require('koa-bodyparser')
 const Router = require('koa-router')
 const HtmlMinifier = require('html-minifier').minify
 const setupDevServer = require('../build/setup-dev-server')
-// const { createBundleRenderer, createRenderer } = require('vue-server-renderer')
 const { createBundleRenderer } = require('vue-server-renderer')
 
 const resolve = file => path.resolve(__dirname, file)
+
 // 缓存
 const microCache = new LRU({
   max: 1000, // 最大緩存数
@@ -46,9 +47,11 @@ if (process.env.NODE_ENV === 'production') {
     removeAttributeQuotes: true,
     removeComments: false
   })
+
   // 获取客户端、服务器端打包生成的json文件
   const serverBundle = require('../dist/vue-ssr-server-bundle.json')
   const clientManifest = require('../dist/vue-ssr-client-manifest.json')
+
   // 赋值
   renderer = createBundleRenderer(serverBundle, {
     runInNewContext: false,
@@ -63,11 +66,11 @@ if (process.env.NODE_ENV === 'production') {
     basedir: resolve('../dist'),
     clientManifest
   })
-  // 静态资源  async标记的函数称为异步函数，在异步函数中，可以用await调用另一个异步函数，这两个关键字将在ES7中引入
-  // router.get('/static/*', async (ctx, next) => {
-  //   // await send(ctx, ctx.path, { root: __dirname + '/../dist' })
-  //   await send(ctx, ctx.path, { root: path.resolve(__dirname, '../dist') })
-  // })
+  // 静态资源
+  router.get('/static/*', async (ctx, next) => {
+    // await send(ctx, ctx.path, { root: __dirname + '/../dist' })
+    await send(ctx, ctx.path, { root: path.resolve(__dirname, '../dist') })
+  })
 } else {
   templatePath = path.resolve(__dirname, './index.html')
   // 开发环境
@@ -97,8 +100,7 @@ const render = async (ctx, next) => {
   }
 
   const context = {
-    url: ctx.url,
-    cookies: ctx.cookies
+    url: ctx.url
   }
 
   // 判断是否可缓存，可缓存并且缓存中有则直接返回
@@ -138,8 +140,6 @@ app.use(koaStatic(isProd ? path.resolve(__dirname, '../dist') : path.resolve(__d
   })) // 配置静态资源目录及过期时间
 
 app.use(bodyParser())
-  // .use(staticFiles(path.resolve(__dirname, "../dist")))
-  // .use(favicon(path.resolve( __dirname, '../static/favicon.ico')))
 
 app.use(router.routes())
    .use(router.allowedMethods())
