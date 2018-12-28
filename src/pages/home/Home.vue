@@ -17,8 +17,8 @@
 
 <script>
 // import '../css/common.scss';
-import Top from './Top';
-import Bottom from './Bottom';
+import Top from '~components/Top';
+import Bottom from '~components/Bottom';
 
 export default {
   name: 'App',
@@ -32,7 +32,7 @@ export default {
     Top
   },
   created () {
-    sessionStorage.setItem('formOther', 0);
+    window.sessionStorage.setItem('formOther', 0);
   },
   methods: {
 

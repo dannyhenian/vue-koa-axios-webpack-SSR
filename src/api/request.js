@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { throwErr } from '../utils/constant/throwErr'; // 捕捉服务端http状态码的方法
+import { throwErr } from '../js/utils/constant/throwErr'; // 捕捉服务端http状态码的方法
 // import store from '@/store' // 引入vuex的相关操作
 // import { Message } from 'element-ui' //element Toast的提示
 // import router from '@/router'

@@ -24,12 +24,12 @@
   background-color: #f6f6f6;
 }
 .ivu-icon-search:before{
-  content:url('../assets/search.png');
+  content:url('../images/search.png');
   vertical-align: middle;
   margin-right: 15px;
 }
 .ivu-icon-chevron-down:before{
-  content:url('../assets/write.png');
+  content:url('../images/write.png');
   vertical-align: middle;
   margin-right: 8px;
 }
@@ -63,7 +63,7 @@
 .nav-menu{
   /*导航样式重置*/
   .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-item-active, .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-item:hover, .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-submenu-active, .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-submenu:hover {
-    background-image: url("../assets/anniu.png");
+    background-image: url("../images/anniu.png");
   }
   .ivu-menu-horizontal{
     height: 54px;
@@ -419,7 +419,7 @@
       }
     }
     .checked {
-      background-image: url("../assets/detailsImg/checkedBg.png")!important;
+      background-image: url("../images/detailsImg/checkedBg.png")!important;
       background-size: cover;
       border: none!important;
     }
@@ -1247,63 +1247,63 @@
   background-color: #eb4a4d!important;
 
   & .per-home{
-    background-image: url("../assets/personCenter/home-active.png")!important;
+    background-image: url("../images/personCenter/home-active.png")!important;
   }
   & .per-books{
-    background-image: url("../assets/personCenter/books-active.png")!important;
+    background-image: url("../images/personCenter/books-active.png")!important;
   }
   & .per-count{
-    background-image: url("../assets/personCenter/count-active.png")!important;
+    background-image: url("../images/personCenter/count-active.png")!important;
   }
   & .per-rate{
-    background-image: url("../assets/personCenter/rate-active.png")!important;
+    background-image: url("../images/personCenter/rate-active.png")!important;
   }
   & .per-message{
-    background-image: url("../assets/personCenter/message-active.png")!important;
+    background-image: url("../images/personCenter/message-active.png")!important;
   }
   & .per-creation{
-    background-image: url("../assets/personCenter/mybooks-active.png")!important;
+    background-image: url("../images/personCenter/mybooks-active.png")!important;
   }
   // manage
   & .book {
-    background-image: url("../assets/manage/book/book_active.png")!important;
+    background-image: url("../images/manage/book/book_active.png")!important;
   }
   & .config {
-    background-image: url("../assets/manage/book/config_active.png")!important;
+    background-image: url("../images/manage/book/config_active.png")!important;
   }
   & .notice {
-    background-image: url("../assets/manage/book/notice_active.png")!important;
+    background-image: url("../images/manage/book/notice_active.png")!important;
   }
   & .writer {
-    background-image: url("../assets/manage/book/writer_active.png")!important;
+    background-image: url("../images/manage/book/writer_active.png")!important;
   }
   & .first{
-    background-image: url("../assets/manage/book/parterFirstT.png")!important;
+    background-image: url("../images/manage/book/parterFirstT.png")!important;
   }
   & .OperationLog {
-    background-image: url("../assets/manage/book/czRzT.png") !important;
+    background-image: url("../images/manage/book/czRzT.png") !important;
   }
   // edit
   & .endit-shuji{
-    background-image: url("../assets/edit/shuji2.png")!important;
+    background-image: url("../images/edit/shuji2.png")!important;
   }
   & .endit-qianyue{
-    background-image: url("../assets/edit/qianyue2.png")!important;
+    background-image: url("../images/edit/qianyue2.png")!important;
   }
   & .endit-maiduan{
-    background-image: url("../assets/edit/maiduan2.png")!important;
+    background-image: url("../images/edit/maiduan2.png")!important;
   }
   & .endit-baodi{
-    background-image: url("../assets/edit/baodi2.png")!important;
+    background-image: url("../images/edit/baodi2.png")!important;
   }
   & .endit-gengxin{
-    background-image: url("../assets/edit/gengxin2.png")!important;
+    background-image: url("../images/edit/gengxin2.png")!important;
   }
   & .endit-fencheng{
-    background-image: url("../assets/edit/fencheng2.png")!important;
+    background-image: url("../images/edit/fencheng2.png")!important;
   }
   & .endit-qudao{
-    background-image: url("../assets/edit/qudao2.png")!important;
+    background-image: url("../images/edit/qudao2.png")!important;
   }
 }
 /* 上传文件取消后面的X按钮 */

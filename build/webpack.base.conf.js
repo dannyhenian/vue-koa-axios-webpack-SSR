@@ -49,6 +49,7 @@ module.exports = {
       '~assets': resolve('src/assets'),
       '~pages': resolve('src/pages'),
       '~mixins': resolve('src/mixins'),
+      '~js': resolve('src/js'),
       '~store': resolve('src/store'),
       '~utils': resolve('src/utils'),
       '~api': resolve('src/api/index-client'),

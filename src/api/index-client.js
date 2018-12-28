@@ -1,7 +1,7 @@
 import axios from 'axios';
 // import qs from 'qs'
 import config from './config-client';
-import { throwErr } from '../utils/constant/throwErr'; // 捕捉服务端http状态码的方法
+import { throwErr } from '../js/utils/constant/throwErr'; // 捕捉服务端http状态码的方法
 // import store from '@/store' // 引入vuex的相关操作
 // import router from '@/router'
 

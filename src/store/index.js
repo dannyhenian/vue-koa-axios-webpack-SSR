@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import testDemo from './modules/testDemo';
 import global from './modules/global';
 import globalUser from './modules/global-user';
+import homeTop from './modules/home/home-top';
 
 Vue.use(Vuex);
 
@@ -18,8 +19,15 @@ export function createStore () {
         namespaced: true,
         ...global,
         modules: {
-          category: globalUser
+          user: globalUser
         }
+      },
+      home: {
+        namespaced: true,
+        modules: {
+          top: homeTop
+        }
+
       }
 
     }

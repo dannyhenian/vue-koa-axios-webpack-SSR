@@ -66,12 +66,12 @@ exports.cssLoaders = function (options) {
 exports.styleLoaders = function (options) {
   const output = []
   const loaders = exports.cssLoaders(options)
-  console.log('loaders=== ' + loaders)
+  // console.log('loaders=== ' + loaders)
 
   for (const extension in loaders) {
     const loader = loaders[extension]
-    console.log('extension=== ' + extension)
-    console.log('loader=== ' + loader)
+    // console.log('extension=== ' + extension)
+    // console.log('loader=== ' + loader)
     output.push({
       test: new RegExp('\\.' + extension + '$'),
       use: loader

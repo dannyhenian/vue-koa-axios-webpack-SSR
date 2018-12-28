@@ -1,18 +1,18 @@
-'use strict'
+'use strict';
 
 /**
  * From koa-static
  */
 
-const { resolve } = require('path')
-const assert = require('assert')
-const send = require('koa-send')
+const { resolve } = require('path');
+const assert = require('assert');
+const send = require('koa-send');
 
 /**
  * Expose `serve()`.
  */
 
-module.exports = serve
+module.exports = serve;
 
 /**
  * Serve static files from `root`.
@@ -24,51 +24,51 @@ module.exports = serve
  */
 
 function serve (root, opts) {
-  opts = Object.assign({}, opts)
+  opts = Object.assign({}, opts);
 
-  assert(root, 'root directory is required to serve files')
+  assert(root, 'root directory is required to serve files');
 
   // options
-  opts.root = resolve(root)
-  if (opts.index !== false) opts.index = opts.index || 'index.html'
+  opts.root = resolve(root);
+  if (opts.index !== false) opts.index = opts.index || 'index.html';
 
   if (!opts.defer) {
     return async function serve (ctx, next) {
-      let done = false
+      let done = false;
 
       if (ctx.method === 'HEAD' || ctx.method === 'GET') {
         if (ctx.path === '/' || ctx.path === '/index.html') { // exclude index.html file
-          await next()
-          return
+          await next();
+          return;
         }
         try {
-          done = await send(ctx, ctx.path, opts)
+          done = await send(ctx, ctx.path, opts);
         } catch (err) {
           if (err.status !== 404) {
-            throw err
+            throw err;
           }
         }
       }
 
       if (!done) {
-        await next()
+        await next();
       }
-    }
+    };
   }
 
   return async function serve (ctx, next) {
-    await next()
+    await next();
 
-    if (ctx.method !== 'HEAD' && ctx.method !== 'GET') return
+    if (ctx.method !== 'HEAD' && ctx.method !== 'GET') return;
     // response is already handled
     if (ctx.body != null || ctx.status !== 404) return // eslint-disable-line
 
     try {
-      await send(ctx, ctx.path, opts)
+      await send(ctx, ctx.path, opts);
     } catch (err) {
       if (err.status !== 404) {
-        throw err
+        throw err;
       }
     }
-  }
+  };
 }

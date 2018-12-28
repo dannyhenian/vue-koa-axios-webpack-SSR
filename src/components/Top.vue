@@ -7,38 +7,35 @@
             <input type="text" name="searchInput" style="display:none"/>
             <Input
             name="searchInput"
-            v-model.trim="value11"
+            v-model.trim="searchBookValve"
             type="text"
-             @on-keyup.enter="searchItem()"
+             @on-keyup.enter="searchItemHandle()"
             @on-focus="getShow"
-            @on-blur="gethidden"
+            @on-blur="getHidden"
             placeholder="找书、找作者"/>
             <div v-if="showTIme" class="searchShow">
                 <div style="font-size: 14px;color:#999;border-bottom: 1px solid #ddd;
                 padding-bottom: 3px;line-height: 23px">大家都在看</div>
-                <div class="menuList" v-for="(tmp,index) in arrayList" :key="index"
+                <div class="menuList" v-for="(tmp,index) in searchBookList" :key="index"
                      @click="showMenue(tmp.id)">
                     <i></i>  {{tmp.title | fromWorld(16)}}
                 </div>
             </div>
-            <span class="search1" @click="searchItem()">
-              <img src="../assets/search.png" alt="">
+            <span class="search1" @click="searchItemHandle()">
+              <img src="../assets/images/search.png" alt="">
             </span>
         </div>
         <div class="header-content-right">
-          <!--<div class="third_login" v-show="!loginState">-->
-            <!--<a :href="weiBoHref"><img src="../assets/weibo_big.png" alt=""></a>-->
-            <!--<img src="../assets/weixin_big.png" alt="" @click="third_weixin">-->
-          <!--</div>-->
           <div class="headportrait">
             <router-link to="/personalCenter" v-show="loginState">
-                <img src="../assets/topphoto.png" alt=""
+                <img src="../assets/images/topphoto.png" alt=""
                 v-if="userphoto==''">
                 <img :src='userphoto' alt="" v-else>
             </router-link>
             <div class="user" v-show="loginState">
               <p class="username">{{username}}</p>
-              <p @click="signOut" class="signout1">退出</p>
+             <!-- <p @click="signOut" class="signout1">退出</p>-->
+              <p  class="signout1">退出</p>
             </div>
             <div class="user login" v-show="!loginState">
               <span @click="login">
@@ -76,33 +73,34 @@
             <li v-show="loginState">
               <span><img :src="qian"></span>
               <span>
-                <a   @click="skipSign()" @mouseover="hoverchange3" @mouseout="hoverout3">签到</a>
+              <!--  <a   @click="skipSign()" @mouseover="hoverchange3" @mouseout="hoverout3">签到</a>-->
+                <a  @mouseover="hoverchange3" @mouseout="hoverout3">签到</a>
               </span>
             </li>
           </ul>
 
         </div>
-        <div class="notice" v-if="list.length!=0">
+        <div class="notice" v-if="noticeList.length!=0">
           <div class="waim">
             <div class="wai1">
-              <img src="../assets/laba.png" alt="">
+              <img src="../assets/images/laba.png" alt="">
             </div>
             <div class="nrwaim">
               <p class="kuang">
                 <marquee class="ggcontent1" scrollAmount=5 >
-                  <div v-if="list.length>1" v-for="(item,index) in list" :key="index" class="hhhh">
+                  <div v-if="noticeList.length>1" v-for="(item,index) in noticeList" :key="index" class="hhhh">
                     <div class="wai">
                       [系统公告]
                     </div>
                     :
                     {{item.content}}
                   </div>
-                  <div  v-if="list.length==1"  class="hhhh">
+                  <div  v-if="noticeList.length==1"  class="hhhh">
                     <div class="wai">
                       [系统公告]
                     </div>
                     :
-                    {{list[0].content}}
+                    {{noticeList[0].content}}
                   </div>
                 </marquee>
               </p>
@@ -141,14 +139,15 @@
           </MenuItem>
            <!--eslint-enable-->
            <Dropdown style="margin-left: 20px;position: absolute;right:0;" trigger="click">
-                <Button type="primary" @click="changePage()">
+               <!-- <Button type="primary" @click="changePage()">-->
+                <Button type="primary" >
                   <Icon type="chevron-down"></Icon>
                     创建作品
                 </Button>
             </Dropdown>
         </Menu>
         <div class="user-sign" v-if="isUserSign">
-          <img src="../assets/personCenter/cha.png" alt="" class="cha"
+          <img src="../assets/images/personCenter/cha.png" alt="" class="cha"
           @click="closeSign">
           <div class="user-sign-left">
             <ul class="left-top">
@@ -162,10 +161,10 @@
             </ul>
             <div class="left-center">
               <span @click="preMonth" v-if="isLeft">
-                <img src="../assets/personCenter/zuo.png" alt="">
+                <img src="../assets/images/personCenter/zuo.png" alt="">
               </span>
               <span @click="lastMonth" v-if="isRight">
-                <img src="../assets/personCenter/you.png" alt="">
+                <img src="../assets/images/personCenter/you.png" alt="">
               </span>
             </div>
             <ul class="left-content">
@@ -198,27 +197,26 @@
 </template>
 
 <script>
-/* import IO from 'socket.io-client'; */
-import { mapState, mapMutations, mapActions } from 'vuex';
-/* import IO from '../js/utils/socket.io'; */
-/* import {connectMsgNum} from '../js/utils/socket.io'; */
-import MyStore from '../js/utils/getData';
-import changWorld from '../js/utils/changeWorld';
-import { SignOut, weiXinLogin, getSigin, signin, hotNovels, noticeList, myHomePage } from '../js/api';
-// import { UsrInfo } from '../js/utils/getData';
+
+import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+import MyStore from '~js/utils/getData';
+import changWorld from '~js/utils/changeWorld';
+import { urls } from '~js/api';
+/* eslint-disable*/
+import { skipHistory, skipFavorite, skipMessage, skipindex } from './top-pageSkip';
+
 export default {
   name: 'top',
   data () {
     return {
       messageNum: 0,
       hehe: '1',
-      arrayList: [],
-      showTIme: false,
+      showTIme: false, // 是否显示大家都在看的书
       t1: null,
       t2: null,
       weiBoHref: 'http://59.110.124.41/novelapi/novelUserService/weibo/weiboLogin',
       message: 'this is header',
-      value11: '',
+      searchBookValve: '', // 书籍搜索框 用户输入值
       websitName: '云纵文学官网',
       theme1: 'dark',
       username: '',
@@ -230,7 +228,6 @@ export default {
       value2: 0,
       iszs: null,
       speed: 10000,
-      list: [],
       isUserSign: false,
       issiged: false,
       isLeft: true,
@@ -245,10 +242,10 @@ export default {
       trans: 0,
       w_can_sign_click: true,
       /* eslint-disable global-require */
-      his: require('../assets/history.png'),
-      boo: require('../assets/booklist.png'),
-      qian: require('../assets/qiandao.png'),
-      mes: require('../assets/mes.png'),
+      his: require('../assets/images/history.png'),
+      boo: require('../assets/images/booklist.png'),
+      qian: require('../assets/images/qiandao.png'),
+      mes: require('../assets/images/mes.png'),
       /* eslint-disable global-require */
       id: '',
       tmp: [
@@ -267,49 +264,22 @@ export default {
       ]
     };
   },
-  /* sockets:{
-    connect(){
-      this.id = this.$socket.id;
-      console.log('==========',this.id);
-    },
-    client(data){ //监听message事件，方法是后台定义和提供的
-      console.log(data); // eslint-disable-line
-    },
 
-  }, */
-  created () {
-    this.recodeCode = localStorage.personInfo === undefined ? null : JSON.parse(localStorage.personInfo).recodeCode; // eslint-disable-line
-    const user = JSON.parse(window.localStorage.getItem('personInfo')); // eslint-disable-line
-    noticeList({
+  async asyncData ({ store, route }, config = {}) {
+    const condition = {
       fuzzyQuery: '',
       pageNum: '0',
       pageSize: '0'
-    }).then((res) => {
-      if (res.data.success) {
-        if (res.data.data.list.length != 0) {// eslint-disable-line
-          const costime = res.data.data.list[0].sysTime;
-          res.data.data.list.forEach((item) => {
-            if (item.status == 1) {// eslint-disable-line
-              this.list.push(item);
-            } else {
-              const date1 = new Date(item.overTime);
-              const over = date1.getTime();
-              const he = over - costime;
-              if (he > 0) {
-                this.list.push(item);
-              }
-            }
-          });
-        } else {
-          this.list = [];
-        }
-      }
-    });
-    /* if (user) {
-      this.t1 = setInterval(() => {
-        this.loginCheck();
-      }, 5000);
-    } */
+    };
+    await Promise.all([
+      store.dispatch('home/top/getNoticeList', condition) // 获取系统公告
+    ]);
+  },
+
+  created () {
+    this.recodeCode = localStorage.personInfo === undefined ? null : JSON.parse(localStorage.personInfo).recodeCode; // eslint-disable-line
+    const user = JSON.parse(window.localStorage.getItem('personInfo')); // eslint-disable-line
+
     this.topInit();
     this.isactive(this.$route);
     const date = new Date();
@@ -319,6 +289,11 @@ export default {
     this.rizi = `${date.getFullYear()}年${1 * (date.getMonth() + 1)}月${date.getDate()}日`;
   },
   computed: {
+    ...mapGetters({
+      searchBookList: 'home/top/getSearchBookList', // 搜索框 展示书籍列表
+      noticeList: 'home/top/getNoticeList' // 系统公告
+    }),
+
     ...mapState({
       count: state => state.count,
       countAlias: 'count', // 别名 `count` 等价于 state => state.count
@@ -332,24 +307,8 @@ export default {
       // userphoto: 'userphoto',
     }),
     currentGoods () {
-        return this.list.filter((goods,index) => index == this.currentType - 1);// eslint-disable-line
+        return this.noticeList.filter((goods,index) => index == this.currentType - 1);// eslint-disable-line
     }
-    /* username: {
-      get() {
-        return this.$store.state.username;
-      },
-      set(val) {
-        this.$store.commit('changeUsername', val);
-      },
-    },
-    userphoto: {
-      get() {
-        return this.$store.state.userphoto;
-      },
-      set(val) {
-        this.$store.commit('changeUserphoto', val);
-      },
-    }, */
   },
   methods: {
     initIO () {
@@ -369,29 +328,30 @@ export default {
         that.messageNum = JSON.parse(data).novelMessageCount;
       });
     },
+
     hoverchange1 () {
-      this.his = require('../assets/history2.png');
+      this.his = require('../assets/images/history2.png');
     },
     hoverout1 () {
-      this.his = require('../assets/history.png');
+      this.his = require('../assets/images/history.png');
     },
     hoverchange2 () {
-      this.boo = require('../assets/booklist2.png');
+      this.boo = require('../assets/images/booklist2.png');
     },
     w_hoverchange () {
-      this.mes = require('../assets/messageActive.png');
+      this.mes = require('../assets/images/messageActive.png');
     },
     w_outchange () {
-      this.mes = require('../assets/mes.png');
+      this.mes = require('../assets/images/mes.png');
     },
     hoverout2 () {
-      this.boo = require('../assets/booklist.png');
+      this.boo = require('../assets/images/booklist.png');
     },
     hoverchange3 () {
-      this.qian = require('../assets/qiandao2.png');
+      this.qian = require('../assets/images/qiandao2.png');
     },
     hoverout3 () {
-      this.qian = require('../assets/qiandao.png');
+      this.qian = require('../assets/images/qiandao.png');
     },
     // animate() {
     //   clearInterval(this.timer);
@@ -412,20 +372,26 @@ export default {
     //     }
     //   });
     // },
+
+    // 跳转到小说的书籍详情页
     showMenue (val) {
-      // this.value11 = val;
       this.$router.push({ path: `/detailsInfo/${val}` });
     },
-    getShow () {
+    // 获取搜索推荐书籍列表
+    async getShow () {
       this.showTIme = true;
-      hotNovels({}).then((res) => {
-        for (let i = 0; i < res.data.data.hotNovels.length; i += 1) {
-          this.arrayList.push(res.data.data.hotNovels[i]);
+      if (this.searchBookList.length > 0) return; // 避免聚焦就请求接口
+      const { code, data } = await this.$store.$api.post(urls.hotNovels, {});
+      if (code === 200) {
+        let bookList = [];
+        for (let i = 0; i < data.hotNovels.length; i += 1) {
+          bookList.push(data.hotNovels[i]);
         }
-        // console.log(this.arrayList); // eslint-disable-line
-      });
+        this.$store.commit('home/top/receiveSearchBookList', bookList);
+      }
     },
-    gethidden () {
+    // 隐藏搜索框推荐列表
+    getHidden () {
       setTimeout(() => {
         this.showTIme = false;
       }, 200);
@@ -469,7 +435,7 @@ export default {
         if (res.data.success) {
           console.log(res.data.data); // eslint-disable-line
           const url = res.data.data;
-          location.href = url;
+          window.location.href = url;
         } else {
           this.$Message.error({
             content: res.data.message,
@@ -513,56 +479,60 @@ export default {
     handler () {
       this.asyncadd();
     },
+    // 跳转登录页
     login () {
       /* const tmp = this.$route.query.channelId;
       localStorage.setItem('channelId', tmp); */
       this.$router.push({ path: '/login', query: { state: 0, redirect: this.$route.fullPath } });
     },
+    // 跳转注册页
     register () {
       /* const tmp = this.$route.query.channelId;
       localStorage.setItem('channelId', tmp); */
-
       this.$router.push({ path: '/login', query: { state: 1, redirect: this.$route.fullPath } });
     },
-    signOut () {
-      if (!this.can_layout) {
-        return;
-      }
-      this.can_layout = false;
-      SignOut().then(
-        (res) => {
-          this.can_layout = true;
-          if (res.data.code === '1') {
-            MyStore.deleteCookie('sessionid');
-            MyStore.removeStore('sessionid');
-            MyStore.removeStore('personInfo');
-            MyStore.removeStore('loginWay');
-            this.changeLoginState();
-            MyStore.setStore('isLogin', false);
-            console.log('退出成功');  //eslint-disable-line
-            this.topInit();
-            // console.log(this.$route);
-            const tmpRoute = this.$route.path;
-            if (tmpRoute === '/charge' || tmpRoute === '/library' || tmpRoute === '/ranking' || tmpRoute === '/') {
-              this.$router.push({ path: tmpRoute });
-            } else if (/personalCenter/.test(tmpRoute)) {
-              this.$router.push({ path: '/personalCenter/' });
-            }
-          } else {
-            this.$router.push({ path: '/' });
-          }
-        }
-      ).catch(
-        (err) => {
-          console.log(err);  //eslint-disable-line
-        }
-      );
-    },
-    searchItem () {
-      const searchValue = this.value11;
+
+    // 退出登录
+    // signOut () {
+    //   if (!this.can_layout) {
+    //     return;
+    //   }
+    //   this.can_layout = false;
+    //   SignOut().then(
+    //     (res) => {
+    //       this.can_layout = true;
+    //       if (res.data.code === '1') {
+    //         MyStore.deleteCookie('sessionid');
+    //         MyStore.removeStore('sessionid');
+    //         MyStore.removeStore('personInfo');
+    //         MyStore.removeStore('loginWay');
+    //         this.changeLoginState();
+    //         MyStore.setStore('isLogin', false);
+    //         console.log('退出成功');  //eslint-disable-line
+    //         this.topInit();
+    //         // console.log(this.$route);
+    //         const tmpRoute = this.$route.path;
+    //         if (tmpRoute === '/charge' || tmpRoute === '/library' || tmpRoute === '/ranking' || tmpRoute === '/') {
+    //           this.$router.push({ path: tmpRoute });
+    //         } else if (/personalCenter/.test(tmpRoute)) {
+    //           this.$router.push({ path: '/personalCenter/' });
+    //         }
+    //       } else {
+    //         this.$router.push({ path: '/' });
+    //       }
+    //     }
+    //   ).catch(
+    //     (err) => {
+    //       console.log(err);  //eslint-disable-line
+    //     }
+    //   );
+    // },
+    // 根据书名或作者搜索
+    searchItemHandle () {
+      const searchValue = this.searchBookValve;
       const item = this.$route.params.item;
       console.log(item);//eslint-disable-line
-      this.changeSearchitem(searchValue);
+      this.$store.commit('home/top/receiveSearchItem', searchValue);
       console.log(searchValue);//eslint-disable-line
       if (searchValue !== '') {
         if (item === '0') {
@@ -573,68 +543,41 @@ export default {
       }
       this.showTIme = false;
     },
-    changePage () {
-      if (MyStore.getStore('isLogin') === 'true') {
-        myHomePage().then((res) => {
-          if (res.data.success) {
-            const tmp = res.data.data.userInfo;
-            if (tmp.beWriter === 'true') {
-              this.$router.push('/personalCenter/newBook');
-              scrollTo(0, 0);
-            } else if (tmp.beWriter === 'false') {
-              this.$router.push('/bewriter');
-              scrollTo(0, 0);
-            } else if (tmp.beWriter === 'prohibit') {
-              this.$Message.error({
-                content: '对不起，您还不是作者身份！',
-                duration: 2
-              });
-            } else {
-              this.$Message.error({
-                content: '对不起，您还不是作者身份！',
-                duration: 2
-              });
-            }
-          } else {
-            this.$Message.error({
-              content: '获取用户权限失败',
-              duration: 2
-            });
-          }
-        });
-      } else {
-        this.$router.push('/login');
-        scrollTo(0, 0);
-      }
-    },
-    skipHistory () {
-      if (MyStore.getStore('isLogin') === 'true') {
-        this.$router.push('/personalCenter/myBookrack/readingHistory');
-      } else {
-        this.$router.push('/login');
-      }
-    },
-    skipFavorite () {
-      if (MyStore.getStore('isLogin') === 'true') {
-        this.$router.push('/personalCenter/myBookrack');
-      } else {
-        this.$router.push('/login');
-      }
-    },
-    skipMessage () {
-      if (MyStore.getStore('isLogin') === 'true') {
-        this.$router.push('/personalCenter/myMessage');
-      } else {
-        this.$router.push('/login');
-      }
-    },
-    skipindex () {
-      if (this.$route.path.split('/')[1]) {
-        this.$router.push('/');
-      } else {
-        location.reload();
-      }
-    },
+    // changePage () {
+    //   if (MyStore.getStore('isLogin') === 'true') {
+    //     myHomePage().then((res) => {
+    //       if (res.data.success) {
+    //         const tmp = res.data.data.userInfo;
+    //         if (tmp.beWriter === 'true') {
+    //           this.$router.push('/personalCenter/newBook');
+    //           window.scrollTo(0, 0);
+    //         } else if (tmp.beWriter === 'false') {
+    //           this.$router.push('/bewriter');
+    //           window.scrollTo(0, 0);
+    //         } else if (tmp.beWriter === 'prohibit') {
+    //           this.$Message.error({
+    //             content: '对不起，您还不是作者身份！',
+    //             duration: 2
+    //           });
+    //         } else {
+    //           this.$Message.error({
+    //             content: '对不起，您还不是作者身份！',
+    //             duration: 2
+    //           });
+    //         }
+    //       } else {
+    //         this.$Message.error({
+    //           content: '获取用户权限失败',
+    //           duration: 2
+    //         });
+    //       }
+    //     });
+    //   } else {
+    //     this.$router.push('/login');
+    //     window.scrollTo(0, 0);
+    //   }
+    // },
+
     isactive (val) {
       const list = ['ALL', 'CLICK', 'SUBANDCOL', 'FINISH', 'UPDATE', 'NEW', 'DIAMOND', 'READING'];
       const list2 = ['bewriter'];
@@ -661,50 +604,50 @@ export default {
       });
     },
     /* 签到 */
-    skipSign () {
-      this.isUserSign = true;
-      this.riLi(this.year, this.month);
-    },
-    riLi (year, month) {
-      const firstDay = this.getDate1(year, month);
-      console.log(firstDay); // eslint-disable-line
-      const lastDay = this.getDay1(year, month);
-      this.dateList = [];
-      for (let i = 1; i <= lastDay; i++) { // eslint-disable-line
-        const data = {
-          day: '',
-          isSinged: false
-        };
-        data.day = i;
-        this.dateList.push(data);
-      }
-      for (let i = 0; i < firstDay; i += 1) {
-        const data = {
-          day: '',
-          isSinged: false
-        };
-        this.dateList.unshift(data);
-      }
-      const rq = month >= 10 ? JSON.stringify(year) + JSON.stringify(month) : JSON.stringify(year) + JSON.stringify(0) + JSON.stringify(month);
-      getSigin({ signMonth: rq }).then((res) => {
-        console.log(res);// eslint-disable-line
-        this.w_can_sign_click = true;
-        if (res.data.success) {
-          res.data.data.forEach((item) => {
-            const date1 = this.timestampToTime(item.signTime).split('-')[2];
-            if(date1==this.day){// eslint-disable-line
-              this.issiged = true;
-            }
-            this.dateList.forEach((item1) => {
-              if(item1.day== date1){// eslint-disable-line
-                item1.isSinged = true;// eslint-disable-line
-              }
-            });
-          });
-        }
-      });
-      console.log(this.dateList);// eslint-disable-line
-    },
+    // skipSign () {
+    //   this.isUserSign = true;
+    //   this.riLi(this.year, this.month);
+    // },
+    // riLi (year, month) {
+    //   const firstDay = this.getDate1(year, month);
+    //   console.log(firstDay); // eslint-disable-line
+    //   const lastDay = this.getDay1(year, month);
+    //   this.dateList = [];
+    //   for (let i = 1; i <= lastDay; i++) { // eslint-disable-line
+    //     const data = {
+    //       day: '',
+    //       isSinged: false
+    //     };
+    //     data.day = i;
+    //     this.dateList.push(data);
+    //   }
+    //   for (let i = 0; i < firstDay; i += 1) {
+    //     const data = {
+    //       day: '',
+    //       isSinged: false
+    //     };
+    //     this.dateList.unshift(data);
+    //   }
+    //   const rq = month >= 10 ? JSON.stringify(year) + JSON.stringify(month) : JSON.stringify(year) + JSON.stringify(0) + JSON.stringify(month);
+    //   getSigin({ signMonth: rq }).then((res) => {
+    //     console.log(res);// eslint-disable-line
+    //     this.w_can_sign_click = true;
+    //     if (res.data.success) {
+    //       res.data.data.forEach((item) => {
+    //         const date1 = this.timestampToTime(item.signTime).split('-')[2];
+    //         if(date1==this.day){// eslint-disable-line
+    //           this.issiged = true;
+    //         }
+    //         this.dateList.forEach((item1) => {
+    //           if(item1.day== date1){// eslint-disable-line
+    //             item1.isSinged = true;// eslint-disable-line
+    //           }
+    //         });
+    //       });
+    //     }
+    //   });
+    //   console.log(this.dateList);// eslint-disable-line
+    // },
     // 本月有多少天
     getDay1 (year, month) {
       const date = new Date(year, month, 0);
@@ -750,7 +693,7 @@ export default {
         return;
       }
       this.w_can_sign_click = false;
-      signin({ userId: JSON.parse(localStorage.personInfo).userId }).then((res) => {
+      signin({ userId: JSON.parse(window.localStorage.personInfo).userId }).then((res) => {
         if (res.data.success) {
           const date = new Date();
           const year = date.getFullYear();
@@ -787,7 +730,7 @@ export default {
     },
     $route (val) {
       if(val.name!='search'){ //eslint-disable-line
-        this.value11 = '';
+        this.searchBookValve = '';
       }
       this.activeItem = val.path.split('/')[1];
       this.isactive(val);
@@ -795,9 +738,7 @@ export default {
   },
   mounted () {
     console.log('==========','123');  // eslint-disable-line
-    this.initIO();
-    /* this.$socket.emit('connect',MyStore.getCookie('sessionid'));
-    this.$socket.emit('client',MyStore.getCookie('sessionid')); */
+    // this.initIO();
   }
 };
 </script>
@@ -839,7 +780,7 @@ export default {
           .user-sign{
           width: 544px;
           height: 388px;
-          background-image:url("../assets/personCenter/signbackground.png");
+          background-image:url("../assets/images/personCenter/signbackground.png");
           background-size: 100%;
           background-repeat: no-repeat;
           background-position: center;
@@ -905,7 +846,7 @@ export default {
                 margin-right: 6px;
               }
               .signed{
-                background-image: url('../assets/personCenter/circle.png');
+                background-image: url('../assets/images/personCenter/circle.png');
                 background-size: 100%;
                 background-repeat: no-repeat;
                 background-position: center;
@@ -917,7 +858,7 @@ export default {
             width: 167px;
             height: 374px;
             margin-top: 7px;
-            background-image:url("../assets/personCenter/sign.png");
+            background-image:url("../assets/images/personCenter/sign.png");
             background-size: 100%;
             background-repeat: no-repeat;
             background-position: center;
@@ -937,7 +878,7 @@ export default {
                 height: 45px;
                 line-height: 39px;
                 text-align: center;
-                background-image: url("../assets/personCenter/signicon1.png");
+                background-image: url("../assets/images/personCenter/signicon1.png");
                 background-size: 100%;
                 background-repeat: no-repeat;
                 background-position: center;
@@ -952,7 +893,7 @@ export default {
                 height: 45px;
                 line-height: 39px;
                 text-align: center;
-                background-image: url("../assets/personCenter/signicon2.png");
+                background-image: url("../assets/images/personCenter/signicon2.png");
                 background-size: 100%;
                 background-repeat: no-repeat;
                 background-position: center;
@@ -996,7 +937,7 @@ export default {
                 width: 191px;
                 height: 50px;
                 line-height: 50px;
-                background: url('../assets/logo2.png') no-repeat center;
+                background: url('../assets/images/logo2.png') no-repeat center;
                 background-size: 100%;
                 text-indent: -99999px;
                 cursor: pointer;
@@ -1140,7 +1081,7 @@ export default {
               height: 44px;
               left: 82px;
               padding-left: 30px;
-              background-image:url("../assets/gonggao.png");
+              background-image:url("../assets/images/gonggao.png");
               background-size: 100%;
               background-repeat: no-repeat;
               background-position: center;

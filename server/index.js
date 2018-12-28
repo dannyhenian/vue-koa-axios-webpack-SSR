@@ -1,44 +1,44 @@
-const fs = require('fs')
-const Koa = require('koa')
-const path = require('path')
-const chalk = require('chalk')
-const LRU = require('lru-cache')
-const koaCompress = require('koa-compress')
-const compressible = require('compressible')
-const send = require('koa-send')
-const koaStatic = require('./static')
-const bodyParser = require('koa-bodyparser')
-const Router = require('koa-router')
-const HtmlMinifier = require('html-minifier').minify
-const setupDevServer = require('../build/setup-dev-server')
-const { createBundleRenderer } = require('vue-server-renderer')
+const fs = require('fs');
+const Koa = require('koa');
+const path = require('path');
+const chalk = require('chalk');
+const LRU = require('lru-cache');
+const koaCompress = require('koa-compress');
+const compressible = require('compressible');
+const send = require('koa-send');
+const koaStatic = require('./static');
+const bodyParser = require('koa-bodyparser');
+const Router = require('koa-router');
+const HtmlMinifier = require('html-minifier').minify;
+const setupDevServer = require('../build/setup-dev-server');
+const { createBundleRenderer } = require('vue-server-renderer');
 
-const resolve = file => path.resolve(__dirname, file)
+const resolve = file => path.resolve(__dirname, file);
 
 // 缓存
 const microCache = new LRU({
   max: 1000, // 最大緩存数
   maxAge: 1000 * 60 * 15 // 重要提示：条目在 15 分钟后过期。
-})
+});
 
 const isCacheable = ctx => {
   // 实现逻辑为，检查请求是否是用户特定(user-specific)。
   // 只有非用户特定(non-user-specific)页面才会缓存
-  console.log('当前路由地址： ' + ctx.url)
+  console.log('当前路由地址： ' + ctx.url);
   if (ctx.url && ctx.url === '/b') {
-    return true
+    return true;
   }
-  return false
-}
+  return false;
+};
 
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV === 'production';
 
 //  第 1 步：创建koa、koa-router 实例
-const app = new Koa()
-const router = new Router()
+const app = new Koa();
+const router = new Router();
 
-let renderer
-let templatePath
+let renderer;
+let templatePath;
 
 // 第 2步：根据环境变量生成不同BundleRenderer实例
 if (process.env.NODE_ENV === 'production') {
@@ -46,11 +46,11 @@ if (process.env.NODE_ENV === 'production') {
     collapseWhitespace: true,
     removeAttributeQuotes: true,
     removeComments: false
-  })
+  });
 
   // 获取客户端、服务器端打包生成的json文件
-  const serverBundle = require('../dist/vue-ssr-server-bundle.json')
-  const clientManifest = require('../dist/vue-ssr-client-manifest.json')
+  const serverBundle = require('../dist/vue-ssr-server-bundle.json');
+  const clientManifest = require('../dist/vue-ssr-client-manifest.json');
 
   // 赋值
   renderer = createBundleRenderer(serverBundle, {
@@ -65,50 +65,50 @@ if (process.env.NODE_ENV === 'production') {
     // this is only needed when vue-server-renderer is npm-linked
     basedir: resolve('../dist'),
     clientManifest
-  })
+  });
   // 静态资源
   router.get('/static/*', async (ctx, next) => {
     // await send(ctx, ctx.path, { root: __dirname + '/../dist' })
-    await send(ctx, ctx.path, { root: path.resolve(__dirname, '../dist') })
-  })
+    await send(ctx, ctx.path, { root: path.resolve(__dirname, '../dist') });
+  });
 } else {
-  templatePath = path.resolve(__dirname, './index.html')
+  templatePath = path.resolve(__dirname, './index.html');
   // 开发环境
   setupDevServer(app, templatePath, (bundle, options) => {
-    console.log('重新bundle~~~~~')
+    console.log('重新bundle~~~~~');
     const option = Object.assign({
       runInNewContext: false
-    }, options)
-    renderer = createBundleRenderer(bundle, option)
+    }, options);
+    renderer = createBundleRenderer(bundle, option);
   }
-  )
+  );
 }
 
 const render = async (ctx, next) => {
-  ctx.set('Content-Type', 'text/html')
+  ctx.set('Content-Type', 'text/html');
 
   const handleError = err => {
     if (err.code === 404) {
-      ctx.status = 404
-      ctx.body = '404 Page Not Found'
+      ctx.status = 404;
+      ctx.body = '404 Page Not Found';
     } else {
-      ctx.status = 500
-      ctx.body = '500 Internal Server Error'
-      console.error(`error during render : ${ctx.url}`)
-      console.error(err.stack)
+      ctx.status = 500;
+      ctx.body = '500 Internal Server Error';
+      console.error(`error during render : ${ctx.url}`);
+      console.error(err.stack);
     }
-  }
+  };
 
   const context = {
     url: ctx.url
-  }
+  };
 
   // 判断是否可缓存，可缓存并且缓存中有则直接返回
-  const cacheable = isCacheable(ctx)
+  const cacheable = isCacheable(ctx);
   if (cacheable) {
-    const hit = microCache.get(ctx.url)
+    const hit = microCache.get(ctx.url);
     if (hit) {
-      console.log('从缓存中取', hit)
+      console.log('从缓存中取', hit);
       /* eslint-disable */
       return ctx.body = hit
     }
