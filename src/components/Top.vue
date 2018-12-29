@@ -276,18 +276,18 @@ export default {
     ]);
   },
 
-  created () {
-    this.recodeCode = localStorage.personInfo === undefined ? null : JSON.parse(localStorage.personInfo).recodeCode; // eslint-disable-line
-    const user = JSON.parse(window.localStorage.getItem('personInfo')); // eslint-disable-line
-
-    this.topInit();
-    this.isactive(this.$route);
-    const date = new Date();
-    this.year = date.getFullYear();
-    this.month = date.getMonth() + 1;
-    this.day = date.getDate();
-    this.rizi = `${date.getFullYear()}年${1 * (date.getMonth() + 1)}月${date.getDate()}日`;
-  },
+  // created () {
+  //   this.recodeCode = localStorage.personInfo === undefined ? null : JSON.parse(localStorage.personInfo).recodeCode; // eslint-disable-line
+  //   const user = JSON.parse(window.localStorage.getItem('personInfo')); // eslint-disable-line
+  //
+  //   this.topInit();
+  //   this.isactive(this.$route);
+  //   const date = new Date();
+  //   this.year = date.getFullYear();
+  //   this.month = date.getMonth() + 1;
+  //   this.day = date.getDate();
+  //   this.rizi = `${date.getFullYear()}年${1 * (date.getMonth() + 1)}月${date.getDate()}日`;
+  // },
   computed: {
     ...mapGetters({
       searchBookList: 'home/top/getSearchBookList', // 搜索框 展示书籍列表

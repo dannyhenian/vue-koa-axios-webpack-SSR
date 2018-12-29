@@ -1,8 +1,13 @@
 const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
+// const vueLoaderConfig = require('./vue-loader.conf')  //解决各种css文件的，定义了诸如css,less,sass之类的和样式有关的loader
+// const { VueLoaderPlugin } = require('vue-loader')
+
 // vue-loader v15版本需要引入此插件
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
 // 服务端渲染用到的插件、默认生成JSON
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 
@@ -59,18 +64,28 @@ module.exports = {
   module: {
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
+      // {
+      //   // 编译.vue文件, vue-cli2还包含vue-loader.conf.js,
+      //   // 但vue-loader15已经将大部分配置改为默认，所以没必要新建个文件
+      //   test: /\.vue$/,
+      //   loader: 'vue-loader',
+      //   options: vueLoaderConfig
+      //   // options: {
+      //   //   // 配置哪些引入路径按照模块方式查找
+      //   //   transformAssetUrls: {
+      //   //     video: ['src', 'poster'],
+      //   //     source: 'src',
+      //   //     img: 'src',
+      //   //     image: 'xlink:href'
+      //   //   }
+      //   // }
+      // },
       {
-        // 编译.vue文件, vue-cli2还包含vue-loader.conf.js,
-        // 但vue-loader15已经将大部分配置改为默认，所以没必要新建个文件
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          // 配置哪些引入路径按照模块方式查找
-          transformAssetUrls: {
-            video: ['src', 'poster'],
-            source: 'src',
-            img: 'src',
-            image: 'xlink:href'
+          compilerOptions: {
+            preserveWhitespace: false
           }
         }
       },
@@ -101,7 +116,25 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      }
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          'sass-loader',
+          // 'less-loader'
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'vue-style-loader',
+          // MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ]
+      },
     ]
   },
   plugins: [

@@ -16,7 +16,12 @@ module.exports = {
     useEslint: true,
     showEslintErrorsInOverlay: false,
     devtool: 'cheap-module-eval-source-map',
-    cssSourceMap: true
+    // 是否生成css，map文件
+    cssSourceMap: true,
+    // If you have problems debugging vue-files in devtools,
+    // set this to false - it *may* help
+    // https://vue-loader.vuejs.org/en/options.html#cachebusting
+    cacheBusting: true,
   },
 
   build: {
@@ -26,6 +31,7 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/dist/',
+    // 定义是否生成生产环境的sourcmap，sourcmap是用来debug编译后文件的，通过映射到编译前文件来实现
     productionSourceMap: false,
     devtool: '#source-map'
   }
