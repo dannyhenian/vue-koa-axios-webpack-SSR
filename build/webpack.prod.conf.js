@@ -15,21 +15,22 @@ const pordWebpackConfig = merge(baseWebpackConfig, {
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
-  module: {
-    rules: utils.styleLoaders({
-      sourceMap: config.build.productionSourceMap,
-      // 将css样式单独提取出文件
-      extract: true,
-      usePostCSS: true
-    })
-  },
+  // module: {
+  //   rules: utils.styleLoaders({
+  //     sourceMap: config.build.productionSourceMap,
+  //     // 将css样式单独提取出文件
+  //     extract: true,
+  //     usePostCSS: false
+  //     // usePostCSS: true
+  //   })
+  // },
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   plugins: [
     // webpack4.0版本以上采用MiniCssExtractPlugin 而不使用extract-text-webpack-plugin
-    new MiniCssExtractPlugin({
-      filename: utils.assetsPath('css/[name].[contenthash].css'),
-      chunkFilename: utils.assetsPath('css/[name].[contenthash].css')
-    }),
+    // new MiniCssExtractPlugin({
+    //   filename: utils.assetsPath('css/[name].[contenthash].css'),
+    //   chunkFilename: utils.assetsPath('css/[name].[contenthash].css')
+    // }),
     //  当vendor模块不再改变时, 根据模块的相对路径生成一个四位数的hash作为模块id
     new webpack.HashedModuleIdsPlugin(),
     new webpack.DefinePlugin({

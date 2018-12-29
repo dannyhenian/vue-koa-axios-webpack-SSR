@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import './assets/css/common.scss';
-
 export default {
   name: 'App',
   data () {
@@ -16,3 +14,7 @@ export default {
   }
 };
 </script>
+
+<style type="text/scss" lang="scss">
+  import './assets/css/common.scss';
+</style>

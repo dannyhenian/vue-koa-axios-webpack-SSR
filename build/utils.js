@@ -13,7 +13,7 @@ exports.assetsPath = function (_path) {
 }
 
 // cssloader兼容各种预处理语言(less|sass|scss|stylus)
-exports.cssLoaders = function (options) {
+/*exports.cssLoaders = function (options) {
   options = options || {}
 
   const cssLoader = {
@@ -32,6 +32,7 @@ exports.cssLoaders = function (options) {
 
   // webpack4.0版本以上采用MiniCssExtractPlugin 而不使用extract-text-webpack-plugin
   function generateLoaders (loader, loaderOptions) {
+    // const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
     const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
 
     if (loader) {
@@ -53,17 +54,17 @@ exports.cssLoaders = function (options) {
 
   return {
     css: generateLoaders(),
-    postcss: generateLoaders(),
-    less: generateLoaders('less'),
+    // postcss: generateLoaders(),
+    // less: generateLoaders('less'),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
-    stylus: generateLoaders('stylus'),
-    styl: generateLoaders('stylus')
+    // stylus: generateLoaders('stylus'),
+    // styl: generateLoaders('stylus')
   }
-}
+}*/
 
 // Generate loaders for standalone style files (outside of .vue)
-exports.styleLoaders = function (options) {
+/*exports.styleLoaders = function (options) {
   const output = []
   const loaders = exports.cssLoaders(options)
   // console.log('loaders=== ' + loaders)
@@ -79,7 +80,7 @@ exports.styleLoaders = function (options) {
   }
 
   return output
-}
+}*/
 
 // 创建友好错误提示的格式
 exports.createNotifierCallback = () => {

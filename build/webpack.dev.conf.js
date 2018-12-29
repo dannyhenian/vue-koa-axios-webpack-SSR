@@ -16,12 +16,13 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   //   'app': path.join(__dirname, '../src/entry-client.js')
   // },
   entry: './src/entry-client.js',
-  module: {
-    rules: utils.styleLoaders({
-      sourceMap: config.dev.cssSourceMap,
-      usePostCSS: true
-    })
-  },
+  // module: {
+  //   rules: utils.styleLoaders({
+  //     sourceMap: config.dev.cssSourceMap,
+  //     usePostCSS: false
+  //     // usePostCSS: true
+  //   })
+  // },
   devtool: config.dev.devtool, //  cheap-module-eval-source-map编译更快
   devServer: {
     contentBase: '../dist',

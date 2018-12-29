@@ -13,6 +13,8 @@ const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 // 用于返回文件相对于根目录的绝对路径
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -64,31 +66,30 @@ module.exports = {
   module: {
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
-      // {
-      //   // 编译.vue文件, vue-cli2还包含vue-loader.conf.js,
-      //   // 但vue-loader15已经将大部分配置改为默认，所以没必要新建个文件
-      //   test: /\.vue$/,
-      //   loader: 'vue-loader',
-      //   options: vueLoaderConfig
-      //   // options: {
-      //   //   // 配置哪些引入路径按照模块方式查找
-      //   //   transformAssetUrls: {
-      //   //     video: ['src', 'poster'],
-      //   //     source: 'src',
-      //   //     img: 'src',
-      //   //     image: 'xlink:href'
-      //   //   }
-      //   // }
-      // },
       {
+        // 编译.vue文件, vue-cli2还包含vue-loader.conf.js,
+        // 但vue-loader15已经将大部分配置改为默认，所以没必要新建个文件
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          compilerOptions: {
-            preserveWhitespace: false
+          // 配置哪些引入路径按照模块方式查找
+          transformAssetUrls: {
+            video: ['src', 'poster'],
+            source: 'src',
+            img: 'src',
+            image: 'xlink:href'
           }
         }
       },
+      // {
+      //   test: /\.vue$/,
+      //   loader: 'vue-loader',
+      //   options: {
+      //     compilerOptions: {
+      //       preserveWhitespace: false
+      //     }
+      //   }
+      // },
       {
         test: /\.js$/, // 利用babel-loader编译js，使用更高的特性，排除npm下载的.vue组件
         loader: 'babel-loader',
@@ -118,22 +119,34 @@ module.exports = {
         }
       },
       {
-        test: /\.scss$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'sass-loader',
-          // 'less-loader'
-        ]
+        test: /\.pug$/,
+        use: {
+          loader: 'pug-plain-loader'
+        }
       },
       {
-        test: /\.css$/,
+        test: /\.(sa|sc|c)ss$/,
         use: [
+          // isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader',
           'vue-style-loader',
-          // MiniCssExtractPlugin.loader,
           'css-loader',
+          'postcss-loader',
           'sass-loader',
         ]
+      },
+      // {
+      //   test: /\.scss$/,
+      //   use: [
+      //     isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader',
+      //     // 'vue-style-loader',
+      //     'css-loader',
+      //     'sass-loader'
+      //   ]
+      // },
+      {
+        test: /\.html$/,
+        use: 'vue-html-loader',
+        exclude: /node_modules/
       },
     ]
   },
