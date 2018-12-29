@@ -15,7 +15,15 @@ const pordWebpackConfig = merge(baseWebpackConfig, {
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
-
+  // module: {
+  //   rules: utils.styleLoaders({
+  //     sourceMap: config.build.productionSourceMap,
+  //     // 将css样式单独提取出文件
+  //     extract: true,
+  //     usePostCSS: false
+  //     // usePostCSS: true
+  //   })
+  // },
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   plugins: [
     // webpack4.0版本以上采用MiniCssExtractPlugin 而不使用extract-text-webpack-plugin
@@ -30,7 +38,13 @@ const pordWebpackConfig = merge(baseWebpackConfig, {
       // 'process.env': env
     }),
   ],
-
+  // 优化相关, 暂时占个位置
+  // optimization: {
+  //   splitChunks: {
+  //     chunks: 'all'
+  //   },
+  //   runtimeChunk: true
+  // },
   optimization: {
     runtimeChunk: 'single',
     splitChunks: {

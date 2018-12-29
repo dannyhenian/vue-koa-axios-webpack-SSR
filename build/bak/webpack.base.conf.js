@@ -81,56 +81,23 @@ module.exports = {
           }
         }
       },
+      // {
+      //   test: /\.vue$/,
+      //   loader: 'vue-loader',
+      //   options: {
+      //     compilerOptions: {
+      //       preserveWhitespace: false
+      //     }
+      //   }
+      // },
       {
         test: /\.js$/, // 利用babel-loader编译js，使用更高的特性，排除npm下载的.vue组件
-        // loader: 'babel-loader',
+        loader: 'babel-loader',
         exclude: file => (
           /node_modules/.test(file) &&
           !/\.vue\.js/.test(file)
-        ),
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env'],
-            plugins: [
-              'transform-vue-jsx',
-              '@babel/plugin-syntax-jsx',
-              '@babel/plugin-syntax-dynamic-import'
-            ]
-          }
-        }
+        )
       },
-      {
-        test: /\.pug$/,
-        use: {
-          loader: 'pug-plain-loader'
-        }
-      },
-      {
-        test: /\.(sa|sc|c)ss$/,
-        use: [
-          isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader',
-          // 'vue-style-loader',
-          'css-loader',
-          // 'postcss-loader',
-          'sass-loader',
-        ]
-      },
-      // {
-      //   test: /\.scss$/,
-      //   use: [
-      //     isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader',
-      //     // 'vue-style-loader',
-      //     'css-loader',
-      //     'sass-loader'
-      //   ]
-      // },
-      {
-        test: /\.html$/,
-        use: 'vue-html-loader',
-        exclude: /node_modules/
-      },
-
       {
         test: /\.(png|jpe?g|gif|svg)$/, // 处理图片
         use: [
@@ -151,6 +118,36 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       },
+      {
+        test: /\.pug$/,
+        use: {
+          loader: 'pug-plain-loader'
+        }
+      },
+      {
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          // isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader',
+          'vue-style-loader',
+          'css-loader',
+          'postcss-loader',
+          'sass-loader',
+        ]
+      },
+      // {
+      //   test: /\.scss$/,
+      //   use: [
+      //     isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader',
+      //     // 'vue-style-loader',
+      //     'css-loader',
+      //     'sass-loader'
+      //   ]
+      // },
+      {
+        test: /\.html$/,
+        use: 'vue-html-loader',
+        exclude: /node_modules/
+      },
     ]
   },
   plugins: [
@@ -159,13 +156,6 @@ module.exports = {
       to: path.join(__dirname, '../dist'),
       ignore: ['.*', 'index.html']
     }]),
-
-    // webpack4.0版本以上采用MiniCssExtractPlugin 而不使用extract-text-webpack-plugin
-    new MiniCssExtractPlugin({
-      filename: isProduction ? utils.assetsPath('css/[name].[contenthash].css') : '[name].css',
-      chunkFilename: isProduction ? utils.assetsPath('css/[name].[contenthash].css') : '[id].css',
-    }),
-
     new VueLoaderPlugin(),
     new VueSSRClientPlugin()
   ]

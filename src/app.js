@@ -3,6 +3,7 @@ import { sync } from 'vuex-router-sync';
 
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
+import './assets/css/common.scss';
 
 import { createRouter } from './router';
 import { createStore } from './store';

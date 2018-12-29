@@ -1,23 +1,24 @@
 <template>
     <Layout>
-        <Top></Top>
-        <Content>
-            <div class="content body-content">
-                <!--<router-view/>-->
-              <keep-alive>
-                <router-view v-if="this.$route.meta.keepAlive"></router-view>
-              </keep-alive>
+       <!-- <Top></Top>-->
+        <!--<Content>-->
+            <!--<div class="content body-content">-->
+                <!--&lt;!&ndash;<router-view/>&ndash;&gt;-->
+              <!--<keep-alive>-->
+                <!--<router-view v-if="this.$route.meta.keepAlive"></router-view>-->
+              <!--</keep-alive>-->
 
-              <router-view v-if="!this.$route.meta.keepAlive"></router-view>
-            </div>
-        </Content>
+              <!--<router-view v-if="!this.$route.meta.keepAlive"></router-view>-->
+            <!--</div>-->
+        <!--</Content>-->
         <Bottom></Bottom>
     </Layout>
+
 </template>
 
 <script>
-// import '../css/common.scss';
-import Top from '~components/Top';
+
+// import Top from '~components/Top';
 import Bottom from '~components/Bottom';
 
 export default {
@@ -28,12 +29,12 @@ export default {
     };
   },
   components: {
-    Bottom,
-    Top
+    Bottom
+    // Top
   },
-  created () {
-    window.sessionStorage.setItem('formOther', 0);
-  },
+  // created () {
+  //   window.sessionStorage.setItem('formOther', 0);
+  // },
   methods: {
 
   }
