@@ -16,10 +16,12 @@ const actions = {
     },
     config
   ) {
+    console.log('开始获取系统公告');
     if (state.noticeList.length > 0) return; // 数据已经缓存，直接返回
     const { success, data } = await $api.post(urls.noticeList, { ...config, cache: true });
     if (success) {
       if (data.list && data.list.length > 0) {
+        console.log('系统公告：' + JSON.stringify(data));
         let list = [];
         const costime = data.list[0].sysTime;
         data.list.forEach((item) => {

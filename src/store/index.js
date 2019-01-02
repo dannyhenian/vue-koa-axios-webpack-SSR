@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import testDemo from './modules/testDemo';
+
 import global from './modules/global';
 import globalUser from './modules/global-user';
 import homeTop from './modules/home/home-top';

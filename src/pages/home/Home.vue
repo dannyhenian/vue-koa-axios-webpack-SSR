@@ -1,6 +1,6 @@
 <template>
     <Layout>
-       <!-- <Top></Top>-->
+        <Top></Top>
         <!--<Content>-->
             <!--<div class="content body-content">-->
                 <!--&lt;!&ndash;<router-view/>&ndash;&gt;-->
@@ -18,7 +18,7 @@
 
 <script>
 
-// import Top from '~components/Top';
+import Top from '~components/Top';
 import Bottom from '~components/Bottom';
 
 export default {
@@ -29,8 +29,8 @@ export default {
     };
   },
   components: {
-    Bottom
-    // Top
+    Bottom,
+    Top
   },
   // created () {
   //   window.sessionStorage.setItem('formOther', 0);

@@ -114,28 +114,36 @@
          <Menu mode="horizontal" :theme="theme1" :active-name="activeItem">
            <!-- eslint-disable -->
           <MenuItem name="">
-            <router-link to="/">首页</router-link>
+            <!--<router-link to="/">首页</router-link>-->
+            首页
           </MenuItem>
           <MenuItem name="ranking">
-            <router-link to="/ranking/0">排行</router-link>
+           <!-- <router-link to="/ranking/0">排行</router-link>-->
+            排行
           </MenuItem>
           <MenuItem name="library">
-            <router-link to="/library/1">书库</router-link>
+            <!--<router-link to="/library/1">书库</router-link>-->
+            书库
           </MenuItem>
           <MenuItem name="recharge">
-            <router-link to="/recharge">充值</router-link>
+           <!-- <router-link to="/recharge">充值</router-link>-->
+            充值
           </MenuItem>
           <MenuItem name="personalCenter">
-            <router-link to="/personalCenter">个人中心</router-link>
+            <!--<router-link to="/personalCenter">个人中心</router-link>-->
+            个人中心
           </MenuItem>
           <MenuItem name="welfare">
-                 <router-link to="/welfare" target="_blank">作者福利</router-link>
+                 <!--<router-link to="/welfare" target="_blank">作者福利</router-link>-->
+            作者福利
            </MenuItem>
           <MenuItem name="manage" v-if="recodeCode === 0||recodeCode === 101" v-show="loginState">
-            <router-link to="/manage/manage_book">管理</router-link>
+            <!--<router-link to="/manage/manage_book">管理</router-link>-->
+            管理
           </MenuItem>
           <MenuItem name="endit" v-if="recodeCode === 101" v-show="loginState">
-            <router-link to="/endit">编辑</router-link>
+            <!--<router-link to="/endit">编辑</router-link>-->
+            编辑
           </MenuItem>
            <!--eslint-enable-->
            <Dropdown style="margin-left: 20px;position: absolute;right:0;" trigger="click">
@@ -146,7 +154,7 @@
                 </Button>
             </Dropdown>
         </Menu>
-        <div class="user-sign" v-if="isUserSign">
+        <!--<div class="user-sign" v-if="isUserSign">
           <img src="../assets/images/personCenter/cha.png" alt="" class="cha"
           @click="closeSign">
           <div class="user-sign-left">
@@ -175,7 +183,7 @@
           <div class="user-sign-right">
             <div class="right-head">
               <p class="date">{{rizi}}</p>
-              <!-- <p class="date">2018年8月23日</p> -->
+              &lt;!&ndash; <p class="date">2018年8月23日</p> &ndash;&gt;
               <p class="btn" v-if="issiged==false" @click="signin1">立即签到</p>
               <p class="btn1" v-if="issiged==true">已签到</p>
             </div>
@@ -190,7 +198,7 @@
                 <p>清零，重新计算</p>
             </div>
           </div>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
@@ -198,7 +206,8 @@
 
 <script>
 
-import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
+// import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
 import MyStore from '~js/utils/getData';
 import changWorld from '~js/utils/changeWorld';
 import { urls } from '~js/api';
@@ -209,6 +218,7 @@ export default {
   name: 'top',
   data () {
     return {
+      noticeList: [],
       messageNum: 0,
       hehe: '1',
       showTIme: false, // 是否显示大家都在看的书
@@ -291,21 +301,21 @@ export default {
   computed: {
     ...mapGetters({
       searchBookList: 'home/top/getSearchBookList', // 搜索框 展示书籍列表
-      noticeList: 'home/top/getNoticeList' // 系统公告
+      // noticeList: 'home/top/getNoticeList' // 系统公告
     }),
 
-    ...mapState({
-      count: state => state.count,
-      countAlias: 'count', // 别名 `count` 等价于 state => state.count
-      name: 'name',
-      ismodalLoginShow: 'modalLogin',
-      isLogin: 'isLogin',
-      userInfoChange: 'userInfoChange',
-      searchItem1: 'searchitem'
-
-      // username: 'username',
-      // userphoto: 'userphoto',
-    }),
+    // ...mapState({
+    //   count: state => state.count,
+    //   countAlias: 'count', // 别名 `count` 等价于 state => state.count
+    //   name: 'name',
+    //   ismodalLoginShow: 'modalLogin',
+    //   isLogin: 'isLogin',
+    //   userInfoChange: 'userInfoChange',
+    //   searchItem1: 'searchitem'
+    //
+    //   // username: 'username',
+    //   // userphoto: 'userphoto',
+    // }),
     currentGoods () {
         return this.noticeList.filter((goods,index) => index == this.currentType - 1);// eslint-disable-line
     }
@@ -397,29 +407,29 @@ export default {
       }, 200);
     },
     // 同步
-    ...mapMutations([
-      'changeUsername',
-      'changeUserphoto',
-      'increment', // map `this.increment()` to `this.$store.commit('increment')`
-      'loginModalShow',
-      'changeLoginState',
-      'changeSearchitem',
-      // `mapMutations` also supports payloads:
-      'incrementBy' // map `this.incrementBy(amount)` to `this.$store.commit('incrementBy', amount)`
-    ]),
-    ...mapMutations({
-      add: 'increment' // map `this.add()` to `this.$store.commit('increment')`
-    }),
-    // 异步
-    ...mapActions([
-      'incrementAsync', // map `this.increment()` to `this.$store.dispatch('increment')`
-
-      // `mapActions` also supports payloads:
-      'incrementAsync' // map `this.incrementBy(amount)` to `this.$store.dispatch('incrementBy', amount)`
-    ]),
-    ...mapActions({
-      asyncadd: 'incrementAsync' // map `this.add()` to `this.$store.dispatch('increment')`
-    }),
+    // ...mapMutations([
+    //   'changeUsername',
+    //   'changeUserphoto',
+    //   'increment', // map `this.increment()` to `this.$store.commit('increment')`
+    //   'loginModalShow',
+    //   'changeLoginState',
+    //   'changeSearchitem',
+    //   // `mapMutations` also supports payloads:
+    //   'incrementBy' // map `this.incrementBy(amount)` to `this.$store.commit('incrementBy', amount)`
+    // ]),
+    // ...mapMutations({
+    //   add: 'increment' // map `this.add()` to `this.$store.commit('increment')`
+    // }),
+    // // 异步
+    // ...mapActions([
+    //   'incrementAsync', // map `this.increment()` to `this.$store.dispatch('increment')`
+    //
+    //   // `mapActions` also supports payloads:
+    //   'incrementAsync' // map `this.incrementBy(amount)` to `this.$store.dispatch('incrementBy', amount)`
+    // ]),
+    // ...mapActions({
+    //   asyncadd: 'incrementAsync' // map `this.add()` to `this.$store.dispatch('increment')`
+    // }),
     loginCheck () {
       const user = JSON.parse(window.localStorage.getItem('personInfo'));
       const tmp = MyStore.getCookie('sessionid');

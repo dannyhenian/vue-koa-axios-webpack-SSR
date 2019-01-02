@@ -22,12 +22,23 @@ export default context => {
         return reject({ code: 404 })
       }
 
-      console.log('context.cookies===' + CircularJSON.stringify(context.cookies))
+      // console.log('context.cookies===' + CircularJSON.stringify(context.cookies))
       // store.$api = store.state.$api = api(context.cookies)
       store.$api = store.state.$api = api()
 
       // 对所有匹配的路由组件调用 `asyncData()`
-      Promise.all(matchedComponents.map(Component => {
+      Promise.all(matchedComponents.map(
+        ({ asyncData }) => asyncData && asyncData({
+          store,
+          route: router.currentRoute,
+          isServer: true,
+          isClient: false
+        })
+/*        Component => {
+        console.log('Component-----------'+JSON.stringify(Component));
+        const {asyncData} = Component;
+        console.log('type---'+ (typeof asyncData === 'function' === ''));
+        console.log('asyncData=='+JSON.stringify(asyncData))
         if (Component.asyncData) {
           return Component.asyncData({
             store,
@@ -37,7 +48,8 @@ export default context => {
             isClient: false
           })
         }
-      })).then(() => {
+      }*/
+      )).then(() => {
         // 在所有预取钩子(preFetch hook) resolve 后，
         // 我们的 store 现在已经填充入渲染应用程序所需的状态。
         // 当我们将状态附加到上下文，
@@ -46,7 +58,7 @@ export default context => {
         context.state = store.state
         console.log('context.url== ' + context.url)
         console.log('context.state== ' + CircularJSON.stringify(context.state))
-        console.log('server== ')
+        // console.log('server== ')
         resolve(app)
       }).catch(reject)
     }, reject)
