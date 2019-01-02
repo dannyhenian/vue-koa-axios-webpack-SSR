@@ -13,6 +13,7 @@ export default context => {
     // 等到 router 将可能的异步组件和钩子解析完
     router.onReady(() => {
       const matchedComponents = router.getMatchedComponents() // 返回目标位置或是当前路由匹配的组件数组
+      console.log('matchedComponents.size ===' + matchedComponents.length)
 
       matchedComponents.forEach((v, i) => { console.log('matchedComponents== ' + JSON.stringify(matchedComponents[i])) })
 
@@ -22,12 +23,16 @@ export default context => {
         return reject({ code: 404 })
       }
 
-      console.log('context.cookies===' + CircularJSON.stringify(context.cookies))
+      // console.log('context.cookies===' + CircularJSON.stringify(context.cookies))
       // store.$api = store.state.$api = api(context.cookies)
       store.$api = store.state.$api = api()
 
       // 对所有匹配的路由组件调用 `asyncData()`
       Promise.all(matchedComponents.map(Component => {
+        console.log('Component===' + JSON.stringify(Component))
+        const { asyncData } = Component
+        console.log('type=====' + (typeof asyncData === 'function'))
+        console.log('asyncData =====' + JSON.stringify(asyncData))
         if (Component.asyncData) {
           return Component.asyncData({
             store,

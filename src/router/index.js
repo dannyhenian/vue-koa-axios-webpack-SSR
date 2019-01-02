@@ -5,6 +5,7 @@ import Router from 'vue-router'
 
 const A = () => import('../components/A/A.vue')
 const B = () => import('../components/B/B.vue')
+const demo = () => import('../components/A/demo-a.vue')
 
 Vue.use(Router)
 // Vue.use(Meta)
@@ -15,14 +16,21 @@ export function createRouter () {
     linkActiveClass: 'active',
     linkExactActiveClass: 'exact-active',
     routes: [
+      // {
+      //   path: '/',
+      //   redirect: '/a'
+      // },
       {
         path: '/',
-        redirect: '/a'
-      },
-      {
-        path: '/a',
         name: 'A',
-        component: A
+        component: A,
+        children: [
+          {
+            path: '/demo',
+            name: 'demo',
+            component: demo
+          }
+        ]
       },
       {
         path: '/b',

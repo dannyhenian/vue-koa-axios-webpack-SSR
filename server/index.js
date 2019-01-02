@@ -105,7 +105,7 @@ const render = async (ctx, next) => {
   try {
     console.log('开始渲染页面')
     const html = await renderer.renderToString(context)
-    console.log('html=== ' + html)
+    // console.log('html=== ' + html)
     console.log('ctx== ' + JSON.stringify(ctx))
     ctx.body = html
     if (cacheable) {
