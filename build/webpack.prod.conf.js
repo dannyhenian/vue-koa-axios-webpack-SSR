@@ -7,6 +7,8 @@ const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 const pordWebpackConfig = merge(baseWebpackConfig, {
   mode: 'production',
   output: {
@@ -17,12 +19,26 @@ const pordWebpackConfig = merge(baseWebpackConfig, {
   },
 
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
+
+  module: {
+    rules: [
+      {
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader',
+          'css-loader',
+          'sass-loader',
+        ]
+      },
+    ]
+  },
+
   plugins: [
     // webpack4.0版本以上采用MiniCssExtractPlugin 而不使用extract-text-webpack-plugin
-    // new MiniCssExtractPlugin({
-    //   filename: utils.assetsPath('css/[name].[contenthash].css'),
-    //   chunkFilename: utils.assetsPath('css/[name].[contenthash].css')
-    // }),
+    new MiniCssExtractPlugin({
+      filename: isProduction ? utils.assetsPath('css/[name].[contenthash].css') : '[name].css',
+      chunkFilename: isProduction ? utils.assetsPath('css/[name].[contenthash].css') : '[id].css',
+    }),
     //  当vendor模块不再改变时, 根据模块的相对路径生成一个四位数的hash作为模块id
     new webpack.HashedModuleIdsPlugin(),
     new webpack.DefinePlugin({

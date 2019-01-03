@@ -71,6 +71,7 @@ module.exports = {
         // 但vue-loader15已经将大部分配置改为默认，所以没必要新建个文件
         test: /\.vue$/,
         loader: 'vue-loader',
+        include: resolve("src"),
         options: {
           // 配置哪些引入路径按照模块方式查找
           transformAssetUrls: {
@@ -107,25 +108,6 @@ module.exports = {
         }
       },
       {
-        test: /\.(sa|sc|c)ss$/,
-        use: [
-          isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader',
-          // 'vue-style-loader',
-          'css-loader',
-          // 'postcss-loader',
-          'sass-loader',
-        ]
-      },
-      // {
-      //   test: /\.scss$/,
-      //   use: [
-      //     isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader',
-      //     // 'vue-style-loader',
-      //     'css-loader',
-      //     'sass-loader'
-      //   ]
-      // },
-      {
         test: /\.html$/,
         use: 'vue-html-loader',
         exclude: /node_modules/
@@ -159,12 +141,6 @@ module.exports = {
       to: path.join(__dirname, '../dist'),
       ignore: ['.*', 'index.html']
     }]),
-
-    // webpack4.0版本以上采用MiniCssExtractPlugin 而不使用extract-text-webpack-plugin
-    new MiniCssExtractPlugin({
-      filename: isProduction ? utils.assetsPath('css/[name].[contenthash].css') : '[name].css',
-      chunkFilename: isProduction ? utils.assetsPath('css/[name].[contenthash].css') : '[id].css',
-    }),
 
     new VueLoaderPlugin(),
     new VueSSRClientPlugin()
