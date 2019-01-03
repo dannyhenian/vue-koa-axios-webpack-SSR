@@ -8,7 +8,7 @@ const state = () => ({
 });
 
 const actions = {
-  async getNoticeList (
+  async fetchNoticeList (
     {
       commit,
       state,
@@ -22,21 +22,22 @@ const actions = {
     if (success) {
       if (data.list && data.list.length > 0) {
         console.log('系统公告：' + JSON.stringify(data));
-        let list = [];
+        let noticeLists = [];
         const costime = data.list[0].sysTime;
         data.list.forEach((item) => {
-          if (item.status == 1) {// eslint-disable-line
-            this.list.push(item);
+          if (item.status === '1') {
+            console.log('公告的状态==' + item.status);
+            noticeLists.push(item);
           } else {
             const date1 = new Date(item.overTime);
             const over = date1.getTime();
             const he = over - costime;
             if (he > 0) {
-              list.push(item);
+              noticeLists.push(item);
             }
           }
         });
-        commit('receiveNoticList', list);
+        commit('receiveNoticList', noticeLists);
       }
     }
   }
@@ -68,6 +69,7 @@ const getters = {
 };
 
 export default {
+  namespaced: true,
   actions,
   state,
   mutations,

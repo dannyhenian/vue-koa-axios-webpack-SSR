@@ -2,7 +2,7 @@
   <div class="page-top" id="page-top">
     <Header>
       <div class="content header-content">
-        <div class="logo" @click="skipindex()">{{websitName}}</div>
+        <div class="logo" @click="_skipindex()">{{websitName}}</div>
         <div style="display: inline-block;position:relative">
             <input type="text" name="searchInput" style="display:none"/>
             <Input
@@ -54,20 +54,20 @@
             <li>
               <span><img :src="his"></span>
               <span>
-                <a   @click="skipHistory()" @mouseover="hoverchange1" @mouseout="hoverout1">历史</a>
+                <a   @click="_skipHistory()" @mouseover="hoverchange1" @mouseout="hoverout1">历史</a>
               </span>
             </li>
             <li>
               <span><img :src="boo"></span>
               <span>
-                <a   @click="skipFavorite()" @mouseover="hoverchange2" @mouseout="hoverout2">书架</a>
+                <a   @click="_skipFavorite()" @mouseover="hoverchange2" @mouseout="hoverout2">书架</a>
               </span>
             </li>
             <li class="message">
               <span><img :src="mes"></span>
               <span class="special">
                 <span class="count" v-show="loginState"><em>{{messageNum}}</em></span>
-                <a @click="skipMessage()" @mouseover="w_hoverchange" @mouseout="w_outchange" style="margin-right: 20px;">消息</a>
+                <a @click="_skipMessage()" @mouseover="w_hoverchange" @mouseout="w_outchange" style="margin-right: 20px;">消息</a>
               </span>
             </li>
             <li v-show="loginState">
@@ -218,7 +218,6 @@ export default {
   name: 'top',
   data () {
     return {
-      noticeList: [],
       messageNum: 0,
       hehe: '1',
       showTIme: false, // 是否显示大家都在看的书
@@ -275,17 +274,6 @@ export default {
     };
   },
 
-  async asyncData ({ store, route }, config = {}) {
-    const condition = {
-      fuzzyQuery: '',
-      pageNum: '0',
-      pageSize: '0'
-    };
-    await Promise.all([
-      store.dispatch('home/top/getNoticeList', condition) // 获取系统公告
-    ]);
-  },
-
   // created () {
   //   this.recodeCode = localStorage.personInfo === undefined ? null : JSON.parse(localStorage.personInfo).recodeCode; // eslint-disable-line
   //   const user = JSON.parse(window.localStorage.getItem('personInfo')); // eslint-disable-line
@@ -298,10 +286,11 @@ export default {
   //   this.day = date.getDate();
   //   this.rizi = `${date.getFullYear()}年${1 * (date.getMonth() + 1)}月${date.getDate()}日`;
   // },
+
   computed: {
     ...mapGetters({
       searchBookList: 'home/top/getSearchBookList', // 搜索框 展示书籍列表
-      // noticeList: 'home/top/getNoticeList' // 系统公告
+      noticeList: 'home/top/getNoticeList' // 系统公告
     }),
 
     // ...mapState({
@@ -321,6 +310,22 @@ export default {
     }
   },
   methods: {
+    // 跳转到个人中心-》我的书架-》阅读历史
+    _skipHistory () {
+      skipHistory();
+    },
+    // 跳转到个人中心-》我的书架-》我的收藏
+    _skipFavorite () {
+      skipFavorite();
+    } ,
+    // 跳转到个人中心-》我的消息
+    _skipMessage () {
+      skipMessage();
+    },
+    // 跳转到首页 或 页面刷新
+    _skipindex () {
+      skipindex();
+    },
     initIO () {
       // const socket = IO.connect('http://192.168.0.194:9998/MyMessageNum'); // eslint-disable-line
       // const socket = require('socket.io-client');
