@@ -30,7 +30,8 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/dist/',
+    assetsPublicPath: '/',
+    // assetsPublicPath: '/dist/',
     // 定义是否生成生产环境的sourcmap，sourcmap是用来debug编译后文件的，通过映射到编译前文件来实现
     productionSourceMap: false,
     devtool: '#source-map'

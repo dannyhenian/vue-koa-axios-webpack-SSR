@@ -5,6 +5,7 @@ const config = require('../config')
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 /* eslint-disable */
 const HOST = process.env.HOST

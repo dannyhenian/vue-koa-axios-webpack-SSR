@@ -6,7 +6,6 @@ const config = require('../config')
 
 // vue-loader v15版本需要引入此插件
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 // 服务端渲染用到的插件、默认生成JSON
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
