@@ -40,6 +40,17 @@ const actions = {
         commit('receiveNoticList', noticeLists);
       }
     }
+  },
+  async fetchHotNovels (
+    {
+      commit,
+      state,
+      rootState: { $api }
+    },
+    param
+  ) {
+    const tmp = await $api.post(urls.hotNovels, { ...param });
+    return tmp;
   }
 };
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import qs from 'qs'
+// import qs from 'qs';
 import config from './config-client';
 import { throwErr } from '../js/utils/constant/throwErr'; // 捕捉服务端http状态码的方法
 // import store from '@/store' // 引入vuex的相关操作
@@ -36,52 +36,46 @@ function checkStatus (response) {
   }
   return {
     data: {
-      code: -404,
+      // code: -404,
+      code: '0',
       message: response.statusText,
-      data: ''
+      // data: '',
+      data: [],
+      success: false
     }
   };
-}
+};
 
 function checkCode (res) {
-  if (res.data.code === -500) {
-    window.location.href = '/backend';
-  } else if (res.data.code === -400) {
+  if (res.status === -500) {
     window.location.href = '/';
-  } else if (res.data.code !== 200) {
+  } else if (res.status === -400) {
+    window.location.href = '/';
+  } else if (res.status !== 200) {
     // showMsg(res.data.message)
   }
   return res && res.data;
-}
+};
 
 export default {
-  post (url, data) {
+  async post (url, data) {
+    console.log(`请求${url}`);
     return axios({
       method: 'post',
       url: config.api + url,
       // data: qs.stringify(data),
-      data: data,
-      timeout: config.timeout,
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-        // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        'Content-Type': 'application/json;charset=UTF-8'
-      }
-    })
-      .then(checkStatus)
+      data: JSON.stringify(data),
+      timeout: config.timeout
+    }).then(checkStatus)
       .then(checkCode);
   },
-  get (url, params) {
+  async get (url, params) {
     return axios({
       method: 'get',
       url: config.api + url,
       params,
-      timeout: config.timeout,
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest'
-      }
-    });
-    // .then(checkStatus)
-    // .then(checkCode)
+      timeout: config.timeout
+    }).then(checkStatus)
+      .then(checkCode);
   }
 };

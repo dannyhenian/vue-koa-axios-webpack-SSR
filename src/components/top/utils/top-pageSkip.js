@@ -1,4 +1,4 @@
-import MyStore from '../js/utils/getData';
+import MyStore from '../../../js/utils/getData';
 
 // 跳转到个人中心-》我的书架-》阅读历史
 export const skipHistory = () => {
