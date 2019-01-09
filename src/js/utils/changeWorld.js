@@ -1,4 +1,4 @@
-function changWorld (content, params, type = '...') {
+function changWorld (content = '', params, type = '...') {
   if (content.length <= params) { // eslint-disable-line
     return `${content}`; // eslint-disable-line
   }

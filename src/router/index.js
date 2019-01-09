@@ -1,12 +1,13 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-// import Meta from 'vue-meta'
+import Meta from 'vue-meta';
 // import cookies from 'js-cookie'
 
 const Home = () => import('~pages/home/Home.vue');
+const Recommend = () => import('~pages/recommend/Recommend.vue');
 
 Vue.use(Router);
-// Vue.use(Meta)
+Vue.use(Meta);
 
 export function createRouter () {
   return new Router({
@@ -16,7 +17,14 @@ export function createRouter () {
     routes: [
       {
         path: '/',
-        component: Home
+        component: Home,
+        children: [
+          {
+            path: '',
+            name: 'Recommend',
+            component: Recommend
+          }
+        ]
       }
     ]
   });

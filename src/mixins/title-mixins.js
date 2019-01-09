@@ -1,28 +1,24 @@
 function getTitle (vm) {
   // 组件可以提供一个 `title` 选项
   // 此选项可以是一个字符串或函数
-  const { title } = vm.$options;
-  // console.log('title= ' + title);
-
-  if (title) {
-    if (typeof title === 'function') {
-      // console.log('title.call= ' + title.call(vm));
-    }
-    return typeof title === 'function'
-      ? title.call(vm)
-      : title;
+  const { metaInfo } = vm.$options;
+  if (metaInfo) {
+    return typeof metaInfo === 'function' ? metaInfo.call(vm) : metaInfo;
   } else {
-    return 'Vue SSR Demo';
+    return '云纵文学_免费小说网|最新最好看的小说网';
   }
 }
 
 // 服务器端mixin
 const serverTitleMixin = {
   created () {
-    const title = getTitle(this);
-    // console.log('server-title= ' + title);
-    if (title && this.$ssrContext) {
-      this.$ssrContext.title = title;
+    console.log('开始获取meta');
+    const meta = getTitle(this);
+    console.log('meta===' + JSON.stringify(meta));
+    if (meta) {
+      this.$ssrContext.title = meta.title || meta;
+      // this.$ssrContext.description = meta.desc || meta;
+      this.$ssrContext.meta = meta.meta || '';
     }
   }
 };
@@ -30,16 +26,8 @@ const serverTitleMixin = {
 // 客户端mixin
 const clientTitleMixin = {
   mounted () {
-    const title = getTitle(this);
-    // console.log('client-title= ' + title);
-    if (title) {
-      document.title = title;
-      // console.log('document.title= ' + document.title);
-    }
   }
 };
 
 // 可以通过 `webpack.DefinePlugin` 注入 `VUE_ENV`
-export default process.env.VUE_ENV === 'server'
-  ? serverTitleMixin
-  : clientTitleMixin;
+export default process.env.VUE_ENV === 'server' ? serverTitleMixin : clientTitleMixin;

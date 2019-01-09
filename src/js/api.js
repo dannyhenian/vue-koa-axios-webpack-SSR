@@ -1,5 +1,6 @@
 
 export const urls = {
+  sdkDownLoad: '/novelapi/novelOAService/fileDown/sdkDownLoad',
   userSet: '/novelapi/novelOAService/novel/userSet',
   recommend: '/novelapi/novelOAService/homepage/novel',
   crunchies: '/novelapi/novelOAService/novelList/getNovelList',
@@ -12,7 +13,6 @@ export const urls = {
   register: '/novelapi/novelUserService/user/register',
   getCode: '/novelapi/novelUserService/user/sendCode',
   signOut: '/novelapi/novelUserService/user/logout',
-
   charge: '/novelapi/novelOAService/upayCenter/upayCenterRecharge',
   aliPay: '/novelapi/novelOAService/upayCenter/getAlipay',
   aliPayBack: '/novelapi/novelPayCenterService/aliPayCenter/returnUrl',
@@ -138,6 +138,7 @@ export const urls = {
   chapterPublish: '/novelapi/novelOAService/novel/updateChaptersPublishStatus',
   chapterQuery: '/novelapi/novelOAService/novel/getChapterInfo',
   chapterSave: '/novelapi/novelOAService/novel/updateChapterOnline',
+  chapterReject: '/novelapi/novelOAService/manage/rejectChapters',
   // 作者
   writerList: '/novelapi/novelOAService/author/getAuthorList',
   writerQuery: '/novelapi/novelOAService/author/getAuthorByPenName',
@@ -149,11 +150,11 @@ export const urls = {
   noticeDel: '/novelapi/novelOAService/notice/deleteAnnouncement',
   noticeAdd: '/novelapi/novelOAService/notice/insertAnnouncement',
   noticeEdit: '/novelapi/novelOAService/notice/updateAnnouncement',
-  /* ---------xjq_end ------------------ */
+  noticeDetails: '/novelapi/novelOAService/NovelAnnouncement/NovelIdFindAnnoucement',
   // 查询小说
   queryNovels: '/novelapi/novelOAService/configureManage/queryNovel',
   // 查询首页推荐小说列表
-  getRecommendList: '/novelapi/novelOAService/advertisement/getRecommendHome',
+  getRecommendList: '/novelapi/novelOAService/promotion/getRecommendHome',
   // 获取首页精选下拉列表
   queryLabelList: '/novelapi/novelOAService/configureManage/queryLabel',
   // 获取首页精选配置
@@ -161,11 +162,11 @@ export const urls = {
   // 新增首页精选配置
   saveHomeChoiceConfig: '/novelapi/novelOAService/configureManage/saveHomeChoiceConfig',
   // 首页推荐小说发布
-  addRecommendHome: '/novelapi/novelOAService/advertisement/addRecommendHome',
+  addRecommendHome: '/novelapi/novelOAService/promotion/addRecommendHome',
   // 推广广告查询
-  getAdvertisement: '/novelapi/novelOAService/advertisement/getAdvertisement',
+  getAdvertisement: '/novelapi/novelOAService/promotion/getPromotion',
   // 推广广告发布
-  releaseAdvertisement: '/novelapi/novelOAService/advertisement/releaseAdvertisement',
+  releaseAdvertisement: '/novelapi/novelOAService/promotion/releasePromotion',
   /* 查询作者信息 */
   writerInfo: '/novelapi/novelUserService/personal/getAuthorInfo',
   /* 查询用户等级 */
@@ -334,7 +335,19 @@ export const urls = {
   /* 获取评论数 */
   queryChapterCommentCount: '/novelapi/novelOAService/chapterComment/queryChapterCommentCount',
   /* 投月票 */
-  pollMonth: '/novelapi/novelOAService/reward/giveMonthRecommend'
+  pollMonth: '/novelapi/novelOAService/reward/giveMonthRecommend',
+  /* 判断章节回复或评论是否存在 */
+  queryCommentExistById: '/novelapi/novelOAService/chapterComment/queryCommentExistById',
+  /* 判断书籍回复或评论是否存在 */
+  queryCommentReplyExistById: '/novelapi/novelOAService/comment/queryCommentReplyExistById',
+  /** 合作伙伴 */
+  partner_access_list: '/novelapi/externalService/access/getAccessInfos',
+  partner_access_add: '/novelapi/externalService/access/addAccess',
+  partner_access_del: '/novelapi/externalService/access/removeAccess',
+  partner_access_edit: '/novelapi/externalService/access/updateAccess',
+  partner_novel_query: '/novelapi/externalService/access/getNovelInfoByName',
+  partner_novel_add: '/novelapi/externalService/access/addRelationNovel',
+  partner_novel_del: '/novelapi/externalService/access/removeRelationNovel'
 };
 
 // export default { urls };

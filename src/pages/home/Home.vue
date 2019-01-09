@@ -1,16 +1,16 @@
 <template>
     <Layout>
         <Top></Top>
-        <!--<Content>-->
-            <!--<div class="content body-content">-->
-                <!--&lt;!&ndash;<router-view/>&ndash;&gt;-->
-              <!--<keep-alive>-->
-                <!--<router-view v-if="this.$route.meta.keepAlive"></router-view>-->
-              <!--</keep-alive>-->
+        <Content>
+            <div class="content body-content">
+                <!--<router-view/>-->
+              <keep-alive>
+                <router-view v-if="this.$route.meta.keepAlive"></router-view>
+              </keep-alive>
 
-              <!--<router-view v-if="!this.$route.meta.keepAlive"></router-view>-->
-            <!--</div>-->
-        <!--</Content>-->
+              <router-view v-if="!this.$route.meta.keepAlive"></router-view>
+            </div>
+        </Content>
         <Bottom></Bottom>
     </Layout>
 

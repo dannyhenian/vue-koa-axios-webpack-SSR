@@ -4,7 +4,9 @@ const state = () => ({
   loginState: false,
   userName: '',
   userphoto: '',
-  userRole: ''
+  userRole: '',
+  cookies: '',
+  sessionId: ''
 });
 
 const actions = {
