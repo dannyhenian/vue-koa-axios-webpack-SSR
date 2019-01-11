@@ -1,13 +1,17 @@
 import axios from 'axios';
 // import qs from 'qs';
 import config from './config-client';
-import { throwErr } from '../js/utils/constant/throwErr'; // 捕捉服务端http状态码的方法
+import { throwErr } from '~js/utils/constant/throwErr'; // 捕捉服务端http状态码的方法
+import MyStore from '~js/utils/getData';
 // import store from '@/store' // 引入vuex的相关操作
 // import router from '@/router'
 
+axios.defaults.headers.common.pageNum = 0;
+axios.defaults.headers.common.pageSize = 10;
 // 过滤请求
 axios.interceptors.request.use(
   config => {
+    config.headers.common.sessionId = MyStore.getCookie('sessionid');
     return config;
   },
   error => {
@@ -22,8 +26,10 @@ axios.interceptors.response.use(
   error => {
     if (error && error.response) {
       let res = {};
-      res.code = error.response.status;
+      // res.code = error.response.status;
+      res.code = '0';
       res.message = throwErr(error.response.status, error.response); // throwErr 捕捉服务端的http状态码 定义在utils工具类的方法
+      res.success = false;
       return Promise.reject(res);
     }
     return Promise.reject(error);
@@ -64,8 +70,13 @@ export default {
       method: 'post',
       url: config.api + url,
       // data: qs.stringify(data),
-      data: JSON.stringify(data),
-      timeout: config.timeout
+      // data: JSON.stringify(data),
+      data: data,
+      timeout: config.timeout,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/json; charset=UTF-8'
+      }
     }).then(checkStatus)
       .then(checkCode);
   },

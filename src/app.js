@@ -10,10 +10,10 @@ import { createStore } from './store';
 
 import App from './App.vue';
 import * as filters from './filters';
-import TitleMixin from './mixins/title-mixins';
+// import TitleMixin from './mixins/title-mixins';
 
 Vue.use(iView);
-Vue.mixin(TitleMixin);
+// Vue.mixin(TitleMixin);
 
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key]);

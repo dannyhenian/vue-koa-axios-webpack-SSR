@@ -1,5 +1,5 @@
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 // import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
 import MyStore from '~js/utils/getData';
 import changWorld from '~js/utils/changeWorld';
@@ -189,7 +189,7 @@ export default {
     async getShow () {
       this.showTIme = true;
       if (this.searchBookList.length > 0) return; // 避免聚焦就请求接口
-      const demo = await this.$store.$api.get('/novelapi/novelOAService/mobile/homepage', {});
+      // const demo = await this.$store.$api.get('/novelapi/novelOAService/mobile/homepage', {});
       // const { success, data } = await this.$store.$api.post(urls.hotNovels, {});
       const { success, data } = await this.fetchHotNovels({});
       if (success === true) {
@@ -208,6 +208,11 @@ export default {
       }, 200);
     },
     // 同步
+    ...mapMutations({
+      'changeUsername': 'global/user/receiveUsername',
+      'changeUserphoto': 'global/user/receiveUserphoto'
+    }),
+
     // ...mapMutations([
     //   'changeUsername',
     //   'changeUserphoto',

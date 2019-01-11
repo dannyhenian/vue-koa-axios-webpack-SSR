@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Meta from 'vue-meta';
 // import cookies from 'js-cookie'
 
+const Login = () => import('~pages/login/userModule.vue');
 const Home = () => import('~pages/home/Home.vue');
 const Recommend = () => import('~pages/recommend/Recommend.vue');
 
@@ -12,8 +13,8 @@ Vue.use(Meta);
 export function createRouter () {
   return new Router({
     mode: 'history',
-    linkActiveClass: 'active',
-    linkExactActiveClass: 'exact-active',
+    // linkActiveClass: 'active',
+    // linkExactActiveClass: 'exact-active',
     routes: [
       {
         path: '/',
@@ -25,6 +26,11 @@ export function createRouter () {
             component: Recommend
           }
         ]
+      },
+      {
+        path: '/login',
+        name: 'login',
+        component: Login
       }
     ]
   });

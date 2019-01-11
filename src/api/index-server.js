@@ -1,22 +1,29 @@
 import axios from 'axios';
 // import qs from 'qs' //格式化数据
-import md5 from 'md5';
+// import md5 from 'md5';
+import md5 from 'js-md5';
 import config from './config-server';
 
 export default {};
 
-export const api = () => {
+export const api = (cookies = {}) => {
   return {
+    cookies,
     api: axios.create({
       baseURL: config.api,
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json;charset=UTF-8',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'sessionId': cookies.sessionid
       },
       timeout: config.timeout
     }),
     post (url, data) {
+      // console.log('post cookie===' + JSON.stringify(cookies));
+      // console.log('post cookie===' + (typeof cookies));
+      // console.log('cookies.sessionId1===' + cookies.sessionid || null);
+      // console.log('cookies.sessionId===' + cookies.sessionid);
       // const cookies = this.getCookes() || {}
       // const username = cookies.username || ''
       // const key = md5(url + JSON.stringify(data) + username)

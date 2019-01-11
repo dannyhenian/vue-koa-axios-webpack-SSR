@@ -9,6 +9,8 @@ export default context => {
 
     // 设置服务端router的位置
     router.push(context.url);
+    console.log('server.cookies2====' + (typeof context.cookies));
+    console.log('server cookie====' + JSON.stringify(context.cookies));
 
     // 等到 router 将可能的异步组件和钩子解析完
     router.onReady(() => {
@@ -24,13 +26,14 @@ export default context => {
 
       // console.log('context.cookies===' + CircularJSON.stringify(context.cookies))
       // store.$api = store.state.$api = api(context.cookies)
-      store.$api = store.state.$api = api()
+      store.$api = store.state.$api = api(context.cookies)
 
       // 对所有匹配的路由组件调用 `asyncData()`
       Promise.all(matchedComponents.map(
         ({ asyncData }) => asyncData && asyncData({
           store,
           route: router.currentRoute,
+          cookies: context.cookies,
           isServer: true,
           isClient: false
         })

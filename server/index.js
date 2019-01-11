@@ -9,6 +9,7 @@ const send = require('koa-send');
 const koaStatic = require('./static');
 const bodyParser = require('koa-bodyparser');
 const Router = require('koa-router');
+const cookie = require('koa-cookie');
 const HtmlMinifier = require('html-minifier').minify;
 const setupDevServer = require('../build/setup-dev-server');
 const { createBundleRenderer } = require('vue-server-renderer');
@@ -100,7 +101,8 @@ const render = async (ctx, next) => {
   };
 
   const context = {
-    url: ctx.url
+    url: ctx.url,
+    cookies: ctx.cookie || { sessionid: null }
   };
 
   // 判断是否可缓存，可缓存并且缓存中有则直接返回
@@ -116,6 +118,9 @@ const render = async (ctx, next) => {
 
   try {
     console.log('开始渲染页面')
+    console.log('context.cookies====' + JSON.stringify(context.cookies));
+    console.log('context.cookies1====' + context.cookies.sessionid);
+    console.log('context.cookies2====' + (typeof context.cookies));
     const html = await renderer.renderToString(context)
     // console.log('html=== ' + html)
     console.log('ctx== ' + JSON.stringify(ctx))
@@ -129,6 +134,7 @@ const render = async (ctx, next) => {
   }
 }
 
+router.use(cookie.default())
 router.get('*', render)
 
 app.use(koaCompress({ // 压缩数据

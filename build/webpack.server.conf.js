@@ -28,7 +28,8 @@ module.exports = merge(baseWebpackConfig, {
   },
   externals: nodeExternals({
     // whitelist: /\.css$/
-    whitelist: [/\.vue$/, /\.css$/, /\.scss$/, /\.pug$/]
+    // whitelist: [/\.vue$/, /\.css$/, /\.scss$/, /\.pug$/]
+    whitelist: [/\?vue&type=style/, /\.css$/, /\.scss$/]
   }),
   module: {
     rules: [

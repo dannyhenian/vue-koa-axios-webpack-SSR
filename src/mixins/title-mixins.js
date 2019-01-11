@@ -2,13 +2,13 @@ function getTitle (vm) {
   // 组件可以提供一个 `title` 选项
   // 此选项可以是一个字符串或函数
   const { metaInfo } = vm.$options;
+  console.log('metaInfo type ===' + (typeof metaInfo));
   if (metaInfo) {
     return typeof metaInfo === 'function' ? metaInfo.call(vm) : metaInfo;
   } else {
     return '云纵文学_免费小说网|最新最好看的小说网';
   }
 }
-
 // 服务器端mixin
 const serverTitleMixin = {
   created () {
@@ -22,12 +22,10 @@ const serverTitleMixin = {
     }
   }
 };
-
 // 客户端mixin
 const clientTitleMixin = {
   mounted () {
   }
 };
-
 // 可以通过 `webpack.DefinePlugin` 注入 `VUE_ENV`
 export default process.env.VUE_ENV === 'server' ? serverTitleMixin : clientTitleMixin;
