@@ -1,3 +1,7 @@
+/*
+* localStorage存储name
+* */
+
 export const topModule = {
   searchBookList: 'searchBookList'
 };
