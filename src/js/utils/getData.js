@@ -1,4 +1,20 @@
-export default {
+const clientCookieHandle = {
+  setSyncStore (name, content) {
+    let cont = content;
+    if (!name) return;
+    if (typeof cont !== 'string') {
+      cont = JSON.stringify(cont);
+    }
+    window.localStorage.setItem(name, cont);
+  },
+  getSyncStore (name) {
+    if (!name) return null;
+    return window.localStorage.getItem(name);
+  },
+  removeSyncStore (name) {
+    if (!name) return;
+    window.localStorage.removeItem(name);
+  },
   setStore (name, content) {
     let cont = content;
     if (!name) return;
@@ -15,6 +31,24 @@ export default {
     if (!name) return;
     window.localStorage.removeItem(name);
   },
+
+  setSessionStore (name, content) {
+    let cont = content;
+    if (!name) return;
+    if (typeof cont !== 'string') {
+      cont = JSON.stringify(cont);
+    }
+    window.sessionStorage.setItem(name, cont);
+  },
+  getSessionStore (name) {
+    if (!name) return null;
+    return window.sessionStorage.getItem(name);
+  },
+  removeSessionStore (name) {
+    if (!name) return;
+    window.sessionStorage.removeItem(name);
+  },
+
   addCookie (name, value, days) {
     const expires = new Date();
     expires.setTime(expires.getTime() + (days * 3600000 * 24));
@@ -44,3 +78,44 @@ export default {
     }
   }
 };
+
+const serverCookieHandle = {
+  setSyncStore (name, content) {
+
+  },
+  getSyncStore (name) {
+
+  },
+  removeSyncStore (name) {
+
+  },
+  setStore (name, content) {
+
+  },
+  getStore (name) {
+    return null;
+  },
+  removeStore (name) {
+
+  },
+  setSessionStore (name, content) {
+
+  },
+  getSessionStore (name) {
+    return null;
+  },
+  removeSessionStore (name) {
+
+  },
+  addCookie (name, value, days) {
+
+  },
+  getCookie (data) {
+    return null;
+  },
+  deleteCookie (name) {
+
+  }
+};
+
+export default process.env.VUE_ENV === 'server' ? serverCookieHandle : clientCookieHandle;

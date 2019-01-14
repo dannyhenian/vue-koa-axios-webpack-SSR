@@ -9,7 +9,6 @@ export default context => {
 
     // 设置服务端router的位置
     router.push(context.url);
-    console.log('server.cookies2====' + (typeof context.cookies));
     console.log('server cookie====' + JSON.stringify(context.cookies));
 
     // 等到 router 将可能的异步组件和钩子解析完
@@ -37,21 +36,6 @@ export default context => {
           isServer: true,
           isClient: false
         })
-/*        Component => {
-        console.log('Component-----------'+JSON.stringify(Component));
-        const {asyncData} = Component;
-        console.log('type---'+ (typeof asyncData === 'function' === ''));
-        console.log('asyncData=='+JSON.stringify(asyncData))
-        if (Component.asyncData) {
-          return Component.asyncData({
-            store,
-            route: router.currentRoute,
-            // cookies: context.cookies,
-            isServer: true,
-            isClient: false
-          })
-        }
-      }*/
       )).then(() => {
         // 在所有预取钩子(preFetch hook) resolve 后，
         // 我们的 store 现在已经填充入渲染应用程序所需的状态。
@@ -59,9 +43,8 @@ export default context => {
         // 并且 `template` 选项用于 renderer 时，
         // 状态将自动序列化为 `window.__INITIAL_STATE__`，并注入 HTML。
         context.state = store.state
-        console.log('context.url== ' + context.url)
-        console.log('context.state== ' + CircularJSON.stringify(context.state))
-        // console.log('server== ')
+        // console.log('context.url== ' + context.url)
+        console.log('context.state== ' + CircularJSON.stringify(context.state));
         resolve(app)
       }).catch(reject)
     }, reject)

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+// import createPersistedState from 'vuex-persistedstate';
 
 import testDemo from './modules/testDemo';
 
@@ -12,6 +13,9 @@ Vue.use(Vuex);
 
 export function createStore () {
   return new Vuex.Store({
+    // plugins: (process.env.VUE_ENV !== 'server') ? [createPersistedState({
+    //   storage: window.sessionStorage
+    // })] : [],
     modules: {
       demo: {
         namespaced: true,

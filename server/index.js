@@ -22,11 +22,14 @@ const microCache = new LRU({
   maxAge: 1000 * 60 * 15 // 重要提示：条目在 15 分钟后过期。
 });
 
+// 待缓存界面的URL
+const urlCache = ['/']
+
 const isCacheable = ctx => {
   // 实现逻辑为，检查请求是否是用户特定(user-specific)。
   // 只有非用户特定(non-user-specific)页面才会缓存
   console.log('当前路由地址： ' + ctx.url);
-  if (ctx.url && ctx.url === '/b') {
+  if (ctx.url && urlCache.indexOf(ctx.url) !== -1) {
     return true;
   }
   return false;
@@ -110,7 +113,7 @@ const render = async (ctx, next) => {
   if (cacheable) {
     const hit = microCache.get(ctx.url);
     if (hit) {
-      console.log('从缓存中取', hit);
+      // console.log('从缓存中取', hit);
       /* eslint-disable */
       return ctx.body = hit
     }
@@ -118,9 +121,6 @@ const render = async (ctx, next) => {
 
   try {
     console.log('开始渲染页面')
-    console.log('context.cookies====' + JSON.stringify(context.cookies));
-    console.log('context.cookies1====' + context.cookies.sessionid);
-    console.log('context.cookies2====' + (typeof context.cookies));
     const html = await renderer.renderToString(context)
     // console.log('html=== ' + html)
     console.log('ctx== ' + JSON.stringify(ctx))

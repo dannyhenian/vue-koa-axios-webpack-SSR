@@ -17,7 +17,7 @@ const actions = {
   ) {
     if (state.recommendImageLists.length > 0) return; // 数据已经缓存，直接返回
     const { success, data } = await $api.get(urls.getRecommendList, { ...config, cache: true });
-    console.log('轮播图=====' + JSON.stringify(data));
+    // console.log('轮播图=====' + JSON.stringify(data));
     if (success) {
       data.forEach((item, index) => {
         if (index === 0) {
@@ -39,7 +39,7 @@ const actions = {
   ) {
     if (state.recommendNovelLists.length > 0) return; // 数据已经缓存，直接返回
     const { success, data } = await $api.post(urls.queryChoiceRecommend, { ...config, cache: true });
-    console.log('精品推荐========' + JSON.stringify(data));
+    // console.log('精品推荐========' + JSON.stringify(data));
     if (success) {
       if (data && data.length > 0) {
         commit('receiveRecommendNovelLists', data);
@@ -56,7 +56,7 @@ const actions = {
   ) {
     if (state.freeCrunchies.length > 0) return; // 数据已经缓存，直接返回
     const { success, data } = await $api.post(urls.crunchies, { ...config, cache: true });
-    console.log('免费榜========' + JSON.stringify(data));
+    // console.log('免费榜========' + JSON.stringify(data));
     if (success) {
       if (data && data.WEEK.length > 0) {
         commit('receiveFreeCrunchies', data.WEEK);

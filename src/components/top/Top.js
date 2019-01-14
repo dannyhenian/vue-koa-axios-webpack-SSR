@@ -199,7 +199,7 @@ export default {
         }
         this.$store.commit('home/top/receiveSearchBookList', bookList);
       }
-      console.log('searchBookList=====' + JSON.stringify(this.searchBookList));
+      // console.log('searchBookList=====' + JSON.stringify(this.searchBookList));
     },
     // 隐藏搜索框推荐列表
     getHidden () {
@@ -350,7 +350,7 @@ export default {
       const item = this.$route.params.item;
       console.log(item);//eslint-disable-line
       this.$store.commit('home/top/receiveSearchItem', searchValue);
-      console.log(searchValue);//eslint-disable-line
+      // console.log(searchValue);//eslint-disable-line
       if (searchValue !== '') {
         if (item === '0') {
           this.$router.push('/search/1');

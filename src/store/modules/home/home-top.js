@@ -1,4 +1,6 @@
 import { urls } from '~js/api';
+import MyStore from '~js/utils/getData';
+import { topModule } from '~js/utils/constant/storeCode';
 
 const state = () => ({
   searchBookList: [], // 搜索框 展示书籍列表
@@ -17,16 +19,17 @@ const actions = {
     config
   ) {
     console.log('开始获取系统公告');
+    console.log('topmodule ==== ' + topModule.searchBookList);
     if (state.noticeList.length > 0) return; // 数据已经缓存，直接返回
     const { success, data } = await $api.post(urls.noticeList, { ...config, cache: true });
     if (success) {
       if (data.list && data.list.length > 0) {
-        console.log('系统公告：' + JSON.stringify(data));
+        // console.log('系统公告：' + JSON.stringify(data));
         let noticeLists = [];
         const costime = data.list[0].sysTime;
         data.list.forEach((item) => {
           if (item.status === '1') {
-            console.log('公告的状态==' + item.status);
+            // console.log('公告的状态==' + item.status);
             noticeLists.push(item);
           } else {
             const date1 = new Date(item.overTime);
@@ -56,6 +59,12 @@ const actions = {
 
 const mutations = {
   receiveSearchBookList (state, bookList) {
+    // console.log('process.env.VUE_ENV2===' + process.env.VUE_ENV !== 'server');
+    // console.log('session-hotbook===' + MyStore.getSessionStore('searchBookList'));
+    // console.log('vuex-book====' + JSON.stringify(state.searchBookList));
+    if (process.env.VUE_ENV !== 'server') {
+      MyStore.setSyncStore(topModule.searchBookList, bookList);
+    }
     state.searchBookList = bookList;
   },
   receiveSearchItem (state, searchValue) {
@@ -69,7 +78,7 @@ const mutations = {
 
 const getters = {
   getSearchBookList (state) {
-    return state.searchBookList;
+    return JSON.parse(MyStore.getSyncStore(topModule.searchBookList)) || state.searchBookList;
   },
   getSearchItem (state) {
     return state.searchItem;
