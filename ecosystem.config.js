@@ -29,4 +29,4 @@ module.exports = {
       'post-deploy': 'cnpm install && pm2 reload ecosystem.config.js --env production'
     }
   }
-}
+};
