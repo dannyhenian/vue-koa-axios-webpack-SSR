@@ -49,7 +49,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       onErrors: config.dev.notifyOnErrors
         ? utils.createNotifierCallback()
         : undefined
-    })
+    }),
+    new webpack.DefinePlugin({
+      'process.env.SERVER_ENV':JSON.stringify(process.env.SERVER_ENV || 'test')
+      // 'process.env': env
+    }),
   ]
 })
 

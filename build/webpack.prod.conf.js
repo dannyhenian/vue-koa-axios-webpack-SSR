@@ -45,6 +45,7 @@ const pordWebpackConfig = merge(baseWebpackConfig, {
     new webpack.HashedModuleIdsPlugin(),
     new webpack.DefinePlugin({
       'process.env.VUE_ENV': '"client"',
+      'process.env.SERVER_ENV':JSON.stringify(process.env.SERVER_ENV || 'test')
       // 'process.env': env
     }),
   ],

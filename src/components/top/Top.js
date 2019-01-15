@@ -191,6 +191,7 @@ export default {
     },
     // 获取搜索推荐书籍列表
     async getShow () {
+      console.log('process.env.SERVER_ENV===' + process.env.SERVER_ENV);
       console.log('isLogin==='+this.isLogin);
       console.log('username===' + this.username);
       console.log('userphoto==='+ this.userphoto);
@@ -348,6 +349,7 @@ export default {
     //     }
     //   );
     // },
+
     // 根据书名或作者搜索
     searchItemHandle () {
       const searchValue = this.searchBookValve;
