@@ -7,5 +7,7 @@ export const topModule = {
 };
 
 export const userModule = {
-  isLogin: 'isLogin'
+  isLogin: 'isLogin',
+  userName: 'userName',
+  userphoto: 'userphoto'
 };

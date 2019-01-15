@@ -21,9 +21,7 @@ export default {
       searchBookValve: '', // 书籍搜索框 用户输入值
       websitName: '云纵文学官网',
       theme1: 'dark',
-      username: '',
-      userphoto: '',
-      loginState: false,
+      // loginState: false,
       activeItem: this.$route.path.split('/')[1],
       recodeCode: null, // 0超管
       can_layout: true,
@@ -83,8 +81,14 @@ export default {
   computed: {
     ...mapGetters({
       searchBookList: 'home/top/getSearchBookList', // 搜索框 展示书籍列表
-      noticeList: 'home/top/getNoticeList' // 系统公告
+      noticeList: 'home/top/getNoticeList', // 系统公告
+      isLogin: 'global/user/getIsLogin', // 是否登录
+      username: 'global/user/getUsername', // 登录用户名
+      userphoto: 'global/user/getUserphoto', // 登录用户头像
     }),
+    loginState () {
+      return this.isLogin;
+    },
 
     // ...mapState({
     //   count: state => state.count,
@@ -187,6 +191,9 @@ export default {
     },
     // 获取搜索推荐书籍列表
     async getShow () {
+      console.log('isLogin==='+this.isLogin);
+      console.log('username===' + this.username);
+      console.log('userphoto==='+ this.userphoto);
       this.showTIme = true;
       if (this.searchBookList.length > 0) return; // 避免聚焦就请求接口
       // const demo = await this.$store.$api.get('/novelapi/novelOAService/mobile/homepage', {});
@@ -277,15 +284,12 @@ export default {
             this.changeUsername(list.userNickName);
             this.changeUserphoto(list.userPhoto);
             MyStore.removeStore('loginWay');
-            this.username = list.userNickName;
-            this.userphoto = list.userPhoto;
-            console.log(this.isLogin) // eslint-disable-line
-            // window.location.replace('http://web.ngrok.zc2422.top:8081/novel/index.html?#/');
-            this.changeLoginState();
+            // this.username = list.userNickName;
+            // this.userphoto = list.userPhoto;
             console.log(this.isLogin) // eslint-disable-line
           } else {
-            this.username = list.userNickName;
-            this.userphoto = list.userPhoto;
+            // this.username = list.userNickName;
+            // this.userphoto = list.userPhoto;
           }
         }
       } else {
@@ -539,9 +543,9 @@ export default {
     }
   },
   watch: {
-    isLogin () {
-      this.topInit();
-    },
+    // isLogin () {
+    //   this.topInit();
+    // },
     userInfoChange () {
       this.topInit();
     },
@@ -554,7 +558,7 @@ export default {
     }
   },
   mounted () {
-    console.log('==========','123');  // eslint-disable-line
+    // console.log('==========','123');  // eslint-disable-line
     // this.initIO();
   }
 };

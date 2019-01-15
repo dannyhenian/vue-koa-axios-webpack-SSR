@@ -235,6 +235,7 @@ import { mapMutations } from 'vuex';
 import md5 from 'js-md5';
 /* import QRCode from '../../js/utils/qrcode'; */
 import MyStore from '~js/utils/getData';
+// import { userModule } from '~js/utils/constant/storeCode';
 import { urls } from '~js/api';
 // import QRCode from 'jqcodejs2 ';  // eslint-disable-line
 // import { Login, Register, GetCode, ForgetGetCode,
@@ -631,7 +632,7 @@ export default{
         this.changeUserphoto(data.userPhoto);
         this.log_user = '';
         this.log_PWD = '';
-        MyStore.setStore('isLogin', true);
+        // MyStore.setSyncStore(userModule.isLogin, true);
         const ReadAndDetail = window.localStorage.getItem('ReadAndDetail');
         if (/(detailsInfo)/.test(ReadAndDetail)) {
           const tmp = window.localStorage.getItem('userNovelId');

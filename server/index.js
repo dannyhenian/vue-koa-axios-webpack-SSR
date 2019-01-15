@@ -23,7 +23,7 @@ const microCache = new LRU({
 });
 
 // 待缓存界面的URL
-const urlCache = ['/']
+const urlCache = ['/'];
 
 const isCacheable = ctx => {
   // 实现逻辑为，检查请求是否是用户特定(user-specific)。

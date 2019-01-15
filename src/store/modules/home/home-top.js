@@ -18,8 +18,6 @@ const actions = {
     },
     config
   ) {
-    console.log('开始获取系统公告');
-    console.log('topmodule ==== ' + topModule.searchBookList);
     if (state.noticeList.length > 0) return; // 数据已经缓存，直接返回
     const { success, data } = await $api.post(urls.noticeList, { ...config, cache: true });
     if (success) {

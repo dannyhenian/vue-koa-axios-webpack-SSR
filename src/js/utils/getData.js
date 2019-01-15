@@ -2,7 +2,7 @@ const clientCookieHandle = {
   setSyncStore (name, content) {
     let cont = content;
     if (!name) return;
-    if (typeof cont !== 'string') {
+    if ((typeof cont !== 'string') && (typeof cont !== 'boolean')) {
       cont = JSON.stringify(cont);
     }
     window.localStorage.setItem(name, cont);
@@ -18,7 +18,7 @@ const clientCookieHandle = {
   setStore (name, content) {
     let cont = content;
     if (!name) return;
-    if (typeof cont !== 'string') {
+    if ((typeof cont !== 'string') && (typeof cont !== 'boolean')) {
       cont = JSON.stringify(cont);
     }
     window.localStorage.setItem(name, cont);
@@ -35,7 +35,7 @@ const clientCookieHandle = {
   setSessionStore (name, content) {
     let cont = content;
     if (!name) return;
-    if (typeof cont !== 'string') {
+    if ((typeof cont !== 'string') && (typeof cont !== 'boolean')) {
       cont = JSON.stringify(cont);
     }
     window.sessionStorage.setItem(name, cont);
